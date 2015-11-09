@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><module codename="uk.co.oldnicksoftware.CRUDyCucumber.branding">
+    <module_version install_time="1447058471389" last="true" origin="installer" specification_version="1.0">
+        <file crc="3997410186" name="config/Modules/uk-co-oldnicksoftware-CRUDyCucumber-branding.xml"/>
+        <file crc="285558362" name="core/locale/core_crudycucumber.jar"/>
+        <file crc="1054151060" name="modules/locale/org-netbeans-core-windows_crudycucumber.jar"/>
+        <file crc="2833547953" name="modules/locale/org-netbeans-core_crudycucumber.jar"/>
+        <file crc="3596348855" name="modules/uk-co-oldnicksoftware-CRUDyCucumber-branding.jar"/>
+    </module_version>
+</module>

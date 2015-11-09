@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: uk.co.oldnicksoftware.crudycucumber.TestFeatureRunner
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 139.626 sec
