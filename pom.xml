@@ -58,6 +58,9 @@
     <modules>
         <module>branding</module>
         <module>application</module>
+        <module>CRUDyCucucmber-customerLibrary</module>
+        <module>mavenproject1/CRUDyCucumber-api</module>
+        <module>CRUDyCucumber-CustomerViewer</module>
     </modules>
 
     <properties>

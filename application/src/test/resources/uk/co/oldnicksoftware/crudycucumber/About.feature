@@ -4,7 +4,7 @@ Feature: About Box
    In order that I can get useful information
 
 Scenario: Show and Hide the About Box
-   Given I have a "Show Manager" Application
+   Given I have a "CRUDyCucumber" Application
    When I click the "Help|About" menu
    Then the "About" Dialog is displayed
    When I click the "About" close button
