@@ -5,9 +5,11 @@
  */
 package uk.co.oldnicksoftware.crudycucumber.view;
 
+import java.util.List;
 import javax.swing.Action;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
+import org.openide.util.Utilities;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 import uk.co.oldnicksoftware.crudycucumber.api.ReloadableViewCapability;
@@ -33,7 +35,7 @@ public class RootNode extends AbstractNode {
             public void reloadChildren() throws Exception {
                 // To reload this node just set a new set of children
                 // using a RootNodeChildFactory object, that retrieves
-                // children asynchronously
+                // children asynchronously                
                 setChildren(Children.create(new RootNodeChildFactory(RootNode.this.query), false));
             }
         });
@@ -44,8 +46,8 @@ public class RootNode extends AbstractNode {
     }
     @Override
     public Action[] getActions(boolean context) {
-        // Pass the Lookup, which now contains ReloadableViewCapability, to the Action:
-        return new Action[]{new ReloadAction(getLookup())};
+        List customerActions = Utilities.actionsForPath("Actions/Customer");
+        return (Action[]) customerActions.toArray(new Action[customerActions.size()]);    
     }
 
     

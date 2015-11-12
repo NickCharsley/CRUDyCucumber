@@ -66,6 +66,11 @@
             <artifactId>CRUDyCucumber-CustomerViewer</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>CRUDyCucumber-domain</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

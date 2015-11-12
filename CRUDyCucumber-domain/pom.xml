@@ -6,7 +6,7 @@
         <artifactId>CRUDyCucumber-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>CRUDyCucucmber-customerLibrary</artifactId>
+    <artifactId>CRUDyCucumber-domain</artifactId>
     <packaging>nbm</packaging>
     <build>
         <plugins>
@@ -16,7 +16,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publicPackages>
-                        <publicPackage>uk.co.oldnicksoftware.crudycucumber.dao</publicPackage>
+                        <publicPackage>uk.co.oldnicksoftware.crudycucumber.domain</publicPackage>
                     </publicPackages>
                 </configuration>
             </plugin>
@@ -34,36 +34,6 @@
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-api-annotations-common</artifactId>
             <version>${netbeans.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-openide-util-lookup</artifactId>
-            <version>${netbeans.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-api-progress</artifactId>
-            <version>${netbeans.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>CRUDyCucumber-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>eclipselink</artifactId>
-            <version>2.5.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derbyclient</artifactId>
-            <version>10.11.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>CRUDyCucumber-domain</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <properties>

@@ -6,29 +6,32 @@
 package uk.co.oldnicksoftware.crudycucumber.view;
 
 import java.awt.event.ActionEvent;
-import javax.swing.AbstractAction;
+import java.awt.event.ActionListener;
+import org.openide.awt.ActionID;
+import org.openide.awt.ActionRegistration;
 import org.openide.util.Exceptions;
-import org.openide.util.Lookup;
+import org.openide.util.NbBundle.Messages;
 import uk.co.oldnicksoftware.crudycucumber.api.ReloadableViewCapability;
 
 /**
  *
  * @author nick
  */
-public final class ReloadAction extends AbstractAction {
-    private ReloadableViewCapability reloadableViewCapability;
-    public ReloadAction(Lookup lookup) {
-        reloadableViewCapability = lookup.lookup(ReloadableViewCapability.class);
-        putValue(AbstractAction.NAME, "Reload");
+
+@ActionID(category = "Customer", id = "uk.co.oldnicksoftware.crudycucumber.view.ReloadableViewAction")
+@ActionRegistration(displayName = "#CTL_ReloadableViewAction")
+@Messages("CTL_ReloadableViewAction=Reload")
+public final class ReloadAction implements ActionListener {
+    private final ReloadableViewCapability context;
+    public ReloadAction(ReloadableViewCapability context) {
+        this.context = context;
     }
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (reloadableViewCapability != null) {
-            try {
-                reloadableViewCapability.reloadChildren();
-            } catch (Exception ex) {
-                Exceptions.printStackTrace(ex);
-            }
+    public void actionPerformed(ActionEvent ev) {
+        try {
+            context.reloadChildren();
+        } catch (Exception ex) {
+            Exceptions.printStackTrace(ex);
         }
     }
 }

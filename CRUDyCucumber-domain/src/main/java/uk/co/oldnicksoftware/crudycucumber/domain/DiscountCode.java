@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.oldnicksoftware.crudycucucmber.model;
+package uk.co.oldnicksoftware.crudycucumber.domain;
 
+import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;

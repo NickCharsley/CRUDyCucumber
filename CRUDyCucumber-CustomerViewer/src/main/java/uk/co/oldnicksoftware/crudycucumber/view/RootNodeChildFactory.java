@@ -10,7 +10,7 @@ import org.openide.nodes.AbstractNode;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
-import uk.co.oldnicksoftware.crudycucucmber.model.Customer;
+import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
 import uk.co.oldnicksoftware.crudycucumber.api.ReloadableQueryCapability;
 import uk.co.oldnicksoftware.crudycucumber.dao.CustomerQuery;
 

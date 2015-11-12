@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
-import uk.co.oldnicksoftware.crudycucucmber.model.Customer;
+import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
 
 /**
  *

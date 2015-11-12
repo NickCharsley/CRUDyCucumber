@@ -12,7 +12,7 @@ import org.netbeans.api.progress.ProgressHandleFactory;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
-import uk.co.oldnicksoftware.crudycucucmber.model.Customer;
+import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
 import uk.co.oldnicksoftware.crudycucumber.api.ReloadableQueryCapability;
 
 /**
