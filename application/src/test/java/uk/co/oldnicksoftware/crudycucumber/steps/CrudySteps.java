@@ -18,7 +18,7 @@ import org.netbeans.jemmy.operators.JPopupMenuOperator;
 
 import org.netbeans.jemmy.operators.JTreeOperator;
 import org.openide.explorer.ExplorerManager;
-import uk.co.oldnicksoftware.crudycucumber.view.RootNode;
+import uk.co.oldnicksoftware.crudycucumber.view.list.RootNode;
 
 /**
  *

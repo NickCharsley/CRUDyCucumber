@@ -58,10 +58,11 @@
     <modules>
         <module>branding</module>
         <module>application</module>
-        <module>CRUDyCucucmber-customerLibrary</module>
-        <module>mavenproject1/CRUDyCucumber-api</module>
-        <module>CRUDyCucumber-CustomerViewer</module>
+        <module>CRUDyCucumber-api</module>
         <module>CRUDyCucumber-domain</module>
+        <module>CRUDyCucumber-customerViewer</module>
+        <module>CRUDyCucumber-customerLibrary</module>
+        <module>CRUDyCucumber-customerEditor</module>
     </modules>
 
     <dependencies>
