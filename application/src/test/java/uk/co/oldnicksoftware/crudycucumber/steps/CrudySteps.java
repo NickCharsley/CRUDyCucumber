@@ -1,22 +1,16 @@
 package uk.co.oldnicksoftware.crudycucumber.steps;
 
+import cucumber.api.DataTable;
 import cucumber.api.java.en.*;
 import cucumber.api.jelly.Helper;
 import cucumber.runtime.PendingException;
 import java.awt.event.KeyEvent;
-import javax.swing.MenuElement;
-import javax.swing.tree.TreePath;
+import java.util.Map;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
-import org.netbeans.jellytools.MainWindowOperator;
-import org.netbeans.jellytools.NbDialogOperator;
-import org.netbeans.jellytools.TopComponentOperator;
+import org.netbeans.jellytools.*;
 import org.netbeans.jellytools.actions.ActionNoBlock;
-import org.netbeans.jellytools.nodes.Node;
-import org.netbeans.jemmy.operators.JPopupMenuOperator;
-//import org.netbeans.jellytools.nodes.Node;
-
-import org.netbeans.jemmy.operators.JTreeOperator;
+import org.netbeans.jemmy.operators.*;
 import org.openide.explorer.ExplorerManager;
 import uk.co.oldnicksoftware.crudycucumber.view.list.RootNode;
 
@@ -25,7 +19,11 @@ import uk.co.oldnicksoftware.crudycucumber.view.list.RootNode;
  * @author nick
  */
 public class CrudySteps {
-    
+    private void z_nop() throws Throwable {
+        // Just exists to keep PendingException as an import
+        throw new PendingException();
+    }
+   
     @Given("^I have an? \"([^\"]*)\" Application$")
     public void haveApplication(String application) throws Throwable {
         MainWindowOperator mwo = MainWindowOperator.getDefault();
@@ -39,7 +37,7 @@ public class CrudySteps {
         new ActionNoBlock(menu, null).performMenu();
     }
 
-    @Then("^the \"([^\"]*)\" Dialog is (displayed|hidden)$")
+    @Then("^(?:T|t)he \"([^\"]*)\" Dialog is (displayed|hidden)$")
     public void dialogVisability(String dialog,String displayed) throws Throwable {
         boolean shown=displayed.equals("displayed");
         
@@ -48,9 +46,17 @@ public class CrudySteps {
                 ,is(shown));
     }
 
-    @When("^I click the \"([^\"]*)\" close button$")
-    public void clickCloseButton(String dialog) throws Throwable {
-        new NbDialogOperator(dialog).closeByButton();
+    @When("^I click the \"([^\"]*)\" (ok|close) button$")
+    public void clickCloseButton(String dialog,String button) throws Throwable {
+        NbDialogOperator doD=new NbDialogOperator(dialog); 
+        switch (button) {
+            case "close":
+                doD.closeByButton();
+                break;
+            case "ok":               
+                doD.pushKey(KeyEvent.VK_ENTER);
+                break;
+        }
     }    
     
     @Then("^I have (?:a|an) \"([^\"]*)\" Panel$")
@@ -72,7 +78,7 @@ public class CrudySteps {
         }
     }
     
-    @Then("^The \"([^\"]*)\" Panel contains (an empty|a) tree (of|with an?) \"([^\"]*)\"$")
+    @Then("^(?:T|t)he \"([^\"]*)\" Panel contains (an empty|a) tree (of|with an?) \"([^\"]*)\"$")
     public void panelContainsTree(String panel, String empty, String ofAn, String entityType) throws Throwable {
         TopComponentOperator tco=  new TopComponentOperator(panel);        
         JTreeOperator tree = new JTreeOperator(tco);        
@@ -88,40 +94,11 @@ public class CrudySteps {
         else
             assertThat("Tree is "+empty+" tree "+ofAn+" "+entityType,children,is(num));
     }    
-    
-    @Then("^The \"([^\"]*)\" Panel's (ROOT NODE) has a (popup menu) item \"([^\"]*)\"$")
-    public void nodeHasMenuItem(String panel,String node, String menu, String item) throws Throwable {
-        TopComponentOperator tco=  new TopComponentOperator(panel);        
-        JTreeOperator tree = new JTreeOperator(tco);        
-        TreePath root=tree.findPath("");
-        boolean found=false;
-        
-        assertThat("Found the "+node,root,is(notNullValue()));
-
-        JPopupMenuOperator popup = new JPopupMenuOperator(tree.callPopupOnPath(root));
-        for (MenuElement me: popup.getSubElements()){
-            String val=me.toString();
-            if (val.contains(item)) {
-                found=true;
-                break;
-            }
-        }        
-        popup.pushKey(KeyEvent.VK_ESCAPE);
-        assertThat("Found the Menu Item "+item,found,is(true));
-    }
-    
-    
-    
-    @Then("^The \"([^\"]*)\" Panel's (ROOT NODE) is \"([^\"]*)\"$")
-    @SuppressWarnings("null")
-    public void nodeIs(String panel, String node,String name) throws Throwable {
-        TopComponentOperator tco=  new TopComponentOperator(panel);        
-        JTreeOperator tree = new JTreeOperator(tco);        
-        TreePath root=tree.findPath("");
-        
-        Node opNode=new Node(tree,root);
-        
-        assertThat("Found the "+node,opNode,is(notNullValue()));
-        assertThat("Node is "+name,opNode.getText(),is(name));
-    }
+         
+    @Given("^I have the following panels:$")
+    public void havePanels(DataTable dtPanels) throws Throwable {
+        for (Map<String, String> map : dtPanels.asMaps()) {
+            haveAPanel(map.get("panel"));
+        }
+    }   
 }

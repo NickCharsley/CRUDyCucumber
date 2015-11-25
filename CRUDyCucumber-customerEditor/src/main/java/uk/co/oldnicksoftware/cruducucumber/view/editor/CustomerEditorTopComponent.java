@@ -10,6 +10,9 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.text.Document;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.netbeans.spi.actions.AbstractSavable;
 import org.openide.DialogDisplayer;
@@ -77,6 +80,8 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
         cityField.getDocument().addUndoableEditListener(manager);
         cityField.addKeyListener(new KeyAdapter(){@Override public void keyReleased(KeyEvent e) { modify(); }});        
         
+        manager.addChangeListener(new ChangeListener(){@Override public void stateChanged(ChangeEvent e) {modify();}});
+        
         instanceContent=new InstanceContent();
         associateLookup(new AbstractLookup(instanceContent));
     }
@@ -88,6 +93,7 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -99,11 +105,17 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(CustomerEditorTopComponent.class, "CustomerEditorTopComponent.jLabel1.text")); // NOI18N
 
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, nameField, org.jdesktop.beansbinding.ObjectProperty.create(), jLabel1, org.jdesktop.beansbinding.BeanProperty.create("labelFor"));
+        bindingGroup.addBinding(binding);
+
         nameField.setText(org.openide.util.NbBundle.getMessage(CustomerEditorTopComponent.class, "CustomerEditorTopComponent.nameField.text")); // NOI18N
 
         cityField.setText(org.openide.util.NbBundle.getMessage(CustomerEditorTopComponent.class, "CustomerEditorTopComponent.cityField.text")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(CustomerEditorTopComponent.class, "CustomerEditorTopComponent.jLabel3.text")); // NOI18N
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, cityField, org.jdesktop.beansbinding.ObjectProperty.create(), jLabel3, org.jdesktop.beansbinding.BeanProperty.create("labelFor"));
+        bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -133,6 +145,8 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
                     .addComponent(jLabel3))
                 .addContainerGap(228, Short.MAX_VALUE))
         );
+
+        bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -141,6 +155,7 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField nameField;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     
     
@@ -159,7 +174,6 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
         customerResult.addLookupListener(this);
         
         resultChanged(new LookupEvent(customerResult));  
-        //Need to Clear Save and Undo here
     }
 
     @Override
@@ -181,6 +195,9 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
         // TODO read your settings according to their version
     }
 
+    private String nameText;
+    private String cityText;
+    
     @Override
     public void resultChanged(LookupEvent lookupEvent) {
         nameField.setText("[no name]");
@@ -207,6 +224,12 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
         while (it3.hasNext()) {
             customerNode = (Node)it3.next();
         }
+        //Need to Clear Save and Undo here
+        nameText=nameField.getText();
+        cityText=cityField.getText();
+        
+        manager.discardAllEdits();
+        modify();
     }
     
     
@@ -216,9 +239,16 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
     }    
     
     private void modify(){
-        if (getLookup().lookup(SavableViewCapability.class) == null) {
-            instanceContent.add(new SavableViewCapability());
-        }        
+        if (!nameField.getText().equals(nameText) || !cityField.getText().equals(cityText)){
+            if (getLookup().lookup(SavableViewCapability.class) == null) {
+                instanceContent.add(new SavableViewCapability());
+            }        
+        } else {
+            SavableViewCapability svc=getLookup().lookup(SavableViewCapability.class);
+            if (svc != null) {
+                svc.remove();
+            }
+        }
     }    
     
 //private static final Icon ICON = ImageUtilities.loadImageIcon("org/shop/editor/Icon.png", true);
@@ -270,7 +300,14 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
                 } catch (Exception ex) {
                     Exceptions.printStackTrace(ex);
                 }
+                nameText=nameField.getText();
+                cityText=cityField.getText();
             }
+            
+            remove();
+        }
+        
+        public void remove(){
             tc().instanceContent.remove(this);
             unregister();
         }

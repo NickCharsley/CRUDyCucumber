@@ -30,7 +30,7 @@ public class CustomerSearchDAO {
 
     public void save(Customer customer) {
         entityManager.getTransaction().begin();
-        entityManager.find(Customer.class, customer.getCustomerId());
+        entityManager.merge(customer);
         entityManager.getTransaction().commit();
     }
 

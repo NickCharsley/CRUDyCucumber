@@ -43,7 +43,7 @@ public class RootNodeChildFactory extends ChildFactory<Customer> {
     @Override
     protected Node createNodeForKey(Customer key) {
         try {
-            return new CustomerNode(key);
+            return new CustomerNode(key,query);
         } catch (IntrospectionException ex) {
             Exceptions.printStackTrace(ex);
         }

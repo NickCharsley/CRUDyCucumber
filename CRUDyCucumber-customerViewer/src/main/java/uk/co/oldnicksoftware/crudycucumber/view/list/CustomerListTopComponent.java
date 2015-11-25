@@ -5,13 +5,16 @@
  */
 package uk.co.oldnicksoftware.crudycucumber.view.list;
 
-import java.awt.BorderLayout;
+import java.beans.PropertyChangeEvent;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
-import org.openide.explorer.view.BeanTreeView;
+import org.openide.nodes.NodeEvent;
+import org.openide.nodes.NodeListener;
+import org.openide.nodes.NodeMemberEvent;
+import org.openide.nodes.NodeReorderEvent;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 import uk.co.oldnicksoftware.crudycucumber.dao.CustomerQuery;
@@ -58,10 +61,33 @@ public final class CustomerListTopComponent extends TopComponent implements Expl
         query.setSqlstring("SELECT c FROM Customer c");
         RootNode node = new RootNode(query);
         explorerManager.setRootContext(node);
-        setLayout(new BorderLayout());
-        add(new BeanTreeView(), BorderLayout.CENTER);
+        //setLayout(new BorderLayout());
+        //add(new BeanTreeView(), BorderLayout.CENTER);
         associateLookup(ExplorerUtils.createLookup(explorerManager, getActionMap()));
-    
+        node.addNodeListener(new NodeListener(){ 
+
+            @Override
+            public void childrenAdded(NodeMemberEvent ev) {
+                //Keeps Root Node it open on 'Reload'                
+                beanTreeView1.expandNode(ev.getNode());
+            }
+
+            @Override
+            public void childrenRemoved(NodeMemberEvent ev) {
+            }
+
+            @Override
+            public void childrenReordered(NodeReorderEvent ev) {
+            }
+
+            @Override
+            public void nodeDestroyed(NodeEvent ev) {
+            }
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+            }
+        });
     }
 
     /**
@@ -72,19 +98,22 @@ public final class CustomerListTopComponent extends TopComponent implements Expl
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        beanTreeView1 = new org.openide.explorer.view.BeanTreeView();
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(beanTreeView1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(beanTreeView1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.openide.explorer.view.BeanTreeView beanTreeView1;
     // End of variables declaration//GEN-END:variables
     @Override
     public void componentOpened() {

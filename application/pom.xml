@@ -46,12 +46,6 @@
         </dependency>
         -->
         <dependency>
-            <groupId>uk.co.oldnicksoftware</groupId>
-            <artifactId>CucumberJelly</artifactId>
-            <version>0.11</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>CRUDyCucumber-api</artifactId>
             <version>${project.version}</version>
@@ -81,6 +75,12 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>CRUDyCucumber-customerLibrary</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>CucumberJelly</artifactId>
+            <version>0.11</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

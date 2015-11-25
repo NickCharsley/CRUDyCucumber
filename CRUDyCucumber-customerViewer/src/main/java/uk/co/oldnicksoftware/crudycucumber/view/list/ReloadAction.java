@@ -30,6 +30,7 @@ public final class ReloadAction implements ActionListener {
     public void actionPerformed(ActionEvent ev) {
         try {
             context.reloadChildren();
+            System.out.println(ev.getSource().toString());
         } catch (Exception ex) {
             Exceptions.printStackTrace(ex);
         }

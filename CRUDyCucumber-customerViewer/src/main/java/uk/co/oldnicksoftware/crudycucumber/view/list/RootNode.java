@@ -36,7 +36,7 @@ public class RootNode extends AbstractNode {
                 // To reload this node just set a new set of children
                 // using a RootNodeChildFactory object, that retrieves
                 // children asynchronously                
-                setChildren(Children.create(new RootNodeChildFactory(RootNode.this.query), false));
+                setChildren(Children.create(new RootNodeChildFactory(RootNode.this.query), false));                         
             }
         });
     }

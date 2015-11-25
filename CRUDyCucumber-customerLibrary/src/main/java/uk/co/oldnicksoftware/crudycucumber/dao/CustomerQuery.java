@@ -41,6 +41,7 @@ public final class CustomerQuery implements Lookup.Provider {
             public void reload() throws Exception {
                 ProgressHandle handle = ProgressHandleFactory.createHandle("Loading...");
                 handle.start();
+                //getCustomers().clear();
                 List<Customer> result = dao.search(sqlstring);
                 for (Customer customer : result) {
                     if (!getCustomers().contains(customer)) {

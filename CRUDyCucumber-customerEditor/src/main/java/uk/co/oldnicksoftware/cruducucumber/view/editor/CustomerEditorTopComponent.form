@@ -65,6 +65,9 @@
           <ResourceString bundle="uk/co/oldnicksoftware/cruducucumber/view/editor/Bundle.properties" key="CustomerEditorTopComponent.jLabel1.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="labelFor" source="nameField" target="jLabel1" targetPath="labelFor" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
     </Component>
     <Component class="javax.swing.JTextField" name="nameField">
       <Properties>
@@ -86,6 +89,9 @@
           <ResourceString bundle="uk/co/oldnicksoftware/cruducucumber/view/editor/Bundle.properties" key="CustomerEditorTopComponent.jLabel3.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <BindingProperties>
+        <BindingProperty name="labelFor" source="cityField" target="jLabel3" targetPath="labelFor" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
     </Component>
   </SubComponents>
 </Form>
