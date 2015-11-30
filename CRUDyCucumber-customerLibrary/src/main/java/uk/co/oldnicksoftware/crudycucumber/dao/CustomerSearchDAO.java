@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
 
 /**
@@ -16,10 +17,22 @@ import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
  * @author nick
  */
 public class CustomerSearchDAO {
-    EntityManager entityManager = Persistence.createEntityManagerFactory("CustomerPU").createEntityManager();
+    EntityManager entityManager ;
+    private Query query;
     
-    public List<Customer> search(String search) {
-        javax.persistence.Query query = entityManager.createQuery(search);
+    private void createTransactionalEntityManager() {
+        entityManager = Persistence.createEntityManagerFactory("CustomerPU").createEntityManager();
+        query = entityManager.createNamedQuery("Customer.findAll");
+        entityManager.getTransaction().begin();
+    }
+    private void closeTransactionalEntityManager() {
+        entityManager.getTransaction().commit();
+        entityManager.close();
+    }
+    
+    public List<Customer> search() {
+        createTransactionalEntityManager();
+        
         List<Customer> customers = new ArrayList<>();
         List<Customer> resultList = query.getResultList();
         for (Customer c : resultList) {
@@ -29,9 +42,15 @@ public class CustomerSearchDAO {
     }    
 
     public void save(Customer customer) {
-        entityManager.getTransaction().begin();
+        createTransactionalEntityManager();
         entityManager.merge(customer);
-        entityManager.getTransaction().commit();
+        closeTransactionalEntityManager();
     }
 
+    public void create(Customer customer) {
+        createTransactionalEntityManager();
+        customer.buildDefault();
+        entityManager.persist(customer);
+        closeTransactionalEntityManager();
+    }
 }

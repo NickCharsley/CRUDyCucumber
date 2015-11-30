@@ -94,6 +94,11 @@ public class CrudyNodes {
     public void selectNodeList(String item, String panel) throws Throwable {
         TopComponentOperator tco=  new TopComponentOperator(panel);        
         JTreeOperator tree = new JTreeOperator(tco);                
-        Node node=new Node(tree,tree.findPath(item));
+        TreePath path=tree.findPath("");
+        Node node;
+        node=new Node(tree,path);
+        if (!node.getText().equals(item)){
+            node=node=new Node(tree,tree.findPath(item));
+        }        
         node.select();
     }}

@@ -12,7 +12,7 @@ import org.netbeans.jellytools.*;
 import org.netbeans.jellytools.actions.ActionNoBlock;
 import org.netbeans.jemmy.operators.*;
 import org.openide.explorer.ExplorerManager;
-import uk.co.oldnicksoftware.crudycucumber.view.list.RootNode;
+import uk.co.oldnicksoftware.crudycucumber.api.RootNode;
 
 /**
  *

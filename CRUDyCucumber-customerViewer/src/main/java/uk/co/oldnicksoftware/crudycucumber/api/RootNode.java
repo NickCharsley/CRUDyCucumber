@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.oldnicksoftware.crudycucumber.view.list;
+package uk.co.oldnicksoftware.crudycucumber.api;
 
 import java.util.List;
 import javax.swing.Action;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
 import org.openide.util.Utilities;
+import org.openide.util.datatransfer.NewType;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 import uk.co.oldnicksoftware.crudycucumber.api.ReloadableViewCapability;
@@ -22,6 +23,8 @@ import uk.co.oldnicksoftware.crudycucumber.dao.CustomerQuery;
 public class RootNode extends AbstractNode {
     private CustomerQuery query;
     private InstanceContent instanceContent;
+    private NewCustomerType newCustomer;   
+    
     public RootNode(CustomerQuery query) {
         this(query, new InstanceContent());
     }
@@ -39,16 +42,24 @@ public class RootNode extends AbstractNode {
                 setChildren(Children.create(new RootNodeChildFactory(RootNode.this.query), false));                         
             }
         });
+        newCustomer=new NewCustomerType(query,this,true);
+        instanceContent.add(newCustomer);
     }
+ 
     @Override
     public String getDisplayName() {
-        return "Query: " + query.getSqlstring();
+        return "Customers";
     }
+    
     @Override
     public Action[] getActions(boolean context) {
         List customerActions = Utilities.actionsForPath("Actions/Customer");
         return (Action[]) customerActions.toArray(new Action[customerActions.size()]);    
     }
-
+    
+    @Override
+    public NewType[] getNewTypes() {
+        return new NewType[]{newCustomer};
+    }
     
 }

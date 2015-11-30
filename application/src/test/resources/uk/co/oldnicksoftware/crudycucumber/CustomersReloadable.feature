@@ -9,7 +9,7 @@ Scenario: The Root Node is Correct
 Given I have a "CRUDyCucumber" Application
   And I have the test Database
   And I have a "CustomerList Window" Panel
- Then The "CustomerList Window" Panel's ROOT NODE is "Query: SELECT c FROM Customer c"
+ Then The "CustomerList Window" Panel's ROOT NODE is "Customers"
 
 Scenario: Refresh Popup Available
     The Root Node of the Customer List has a Reload Menu

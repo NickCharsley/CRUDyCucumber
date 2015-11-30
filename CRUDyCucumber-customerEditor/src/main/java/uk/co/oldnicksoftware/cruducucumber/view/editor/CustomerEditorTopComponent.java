@@ -5,14 +5,11 @@
  */
 package uk.co.oldnicksoftware.cruducucumber.view.editor;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.text.Document;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.netbeans.spi.actions.AbstractSavable;
 import org.openide.DialogDisplayer;
@@ -28,6 +25,7 @@ import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
+import org.openide.util.datatransfer.NewType;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 import org.openide.windows.WindowManager;
@@ -76,9 +74,7 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
         setToolTipText(Bundle.HINT_CustomerEditorTopComponent());
 
         nameField.getDocument().addUndoableEditListener(manager);
-        nameField.addKeyListener(new KeyAdapter(){@Override public void keyReleased(KeyEvent e) { modify(); }});
         cityField.getDocument().addUndoableEditListener(manager);
-        cityField.addKeyListener(new KeyAdapter(){@Override public void keyReleased(KeyEvent e) { modify(); }});        
         
         manager.addChangeListener(new ChangeListener(){@Override public void stateChanged(ChangeEvent e) {modify();}});
         
@@ -208,7 +204,7 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
         Iterator it1 = allQueries.iterator();
         while (it1.hasNext()) {
             query = (CustomerQuery)it1.next();
-            setDisplayName(query.getSqlstring());
+            setDisplayName("Customers");
         }
         //Get the customer:
         Collection allCustomers = customerResult.allInstances();
@@ -227,12 +223,25 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
         //Need to Clear Save and Undo here
         nameText=nameField.getText();
         cityText=cityField.getText();
-        
+
+        //Remove New Type?
+        Lookup.Result<NewType> newTypeResult= getLookup().lookupResult(NewType.class);
+        Collection allNewTypes = newTypeResult.allInstances();
+        Iterator it4 = allNewTypes.iterator();
+        while (it4.hasNext()){
+            instanceContent.remove(it4.next());
+        }        
+       
+        if (customerNode!=null){
+            this.setActivatedNodes(new Node[]{customerNode});
+            for (NewType nt :customerNode.getNewTypes()){
+                instanceContent.add(nt);
+            }
+        }
         manager.discardAllEdits();
         modify();
     }
-    
-    
+        
     @Override
     public UndoRedo getUndoRedo() { 
         return manager; 
@@ -251,7 +260,7 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
         }
     }    
     
-//private static final Icon ICON = ImageUtilities.loadImageIcon("org/shop/editor/Icon.png", true);
+   //private static final Icon ICON = ImageUtilities.loadImageIcon("org/shop/editor/Icon.png", true);
     
     private class SavableViewCapability extends AbstractSavable {// implements Icon {
         

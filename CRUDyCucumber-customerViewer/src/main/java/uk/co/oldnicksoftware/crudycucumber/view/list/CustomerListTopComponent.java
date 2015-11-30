@@ -5,6 +5,7 @@
  */
 package uk.co.oldnicksoftware.crudycucumber.view.list;
 
+import uk.co.oldnicksoftware.crudycucumber.api.RootNode;
 import java.beans.PropertyChangeEvent;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
@@ -58,7 +59,6 @@ public final class CustomerListTopComponent extends TopComponent implements Expl
         putClientProperty(TopComponent.PROP_UNDOCKING_DISABLED, Boolean.TRUE);
 
         CustomerQuery query = new CustomerQuery();
-        query.setSqlstring("SELECT c FROM Customer c");
         RootNode node = new RootNode(query);
         explorerManager.setRootContext(node);
         //setLayout(new BorderLayout());

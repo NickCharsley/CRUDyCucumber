@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+OpenIDE-Module-Layer: uk/co/oldnicksoftware/crudycucumber/customerviewer/layer.xml
 OpenIDE-Module-Localizing-Bundle: uk/co/oldnicksoftware/crudycucumber/customerviewer/Bundle.properties
 OpenIDE-Module-Requires: org.openide.windows.WindowManager
 

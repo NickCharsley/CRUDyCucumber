@@ -18,7 +18,7 @@ import uk.co.oldnicksoftware.crudycucumber.api.ReloadableViewCapability;
  * @author nick
  */
 
-@ActionID(category = "Customer", id = "uk.co.oldnicksoftware.crudycucumber.view.ReloadableViewAction")
+@ActionID(category = "Customer", id = "uk.co.oldnicksoftware.crudycucumber.view.list.ReloadableViewAction")
 @ActionRegistration(displayName = "#CTL_ReloadableViewAction")
 @Messages("CTL_ReloadableViewAction=Reload")
 public final class ReloadAction implements ActionListener {

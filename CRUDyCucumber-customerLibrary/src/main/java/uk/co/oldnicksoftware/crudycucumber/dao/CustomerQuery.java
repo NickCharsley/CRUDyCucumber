@@ -12,6 +12,7 @@ import org.netbeans.api.progress.ProgressHandleFactory;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
+import uk.co.oldnicksoftware.crudycucumber.api.CreatableEntityCapability;
 import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
 import uk.co.oldnicksoftware.crudycucumber.api.ReloadableEntityCapability;
 import uk.co.oldnicksoftware.crudycucumber.api.SaveableEntityCapability;
@@ -25,7 +26,6 @@ public final class CustomerQuery implements Lookup.Provider {
     private final List<Customer> customers;
     private final Lookup lookup;
     private final InstanceContent instanceContent;
-    private String sqlstring;
     private CustomerSearchDAO dao;
     
     public CustomerQuery() {
@@ -42,7 +42,7 @@ public final class CustomerQuery implements Lookup.Provider {
                 ProgressHandle handle = ProgressHandleFactory.createHandle("Loading...");
                 handle.start();
                 //getCustomers().clear();
-                List<Customer> result = dao.search(sqlstring);
+                List<Customer> result = dao.search();
                 for (Customer customer : result) {
                     if (!getCustomers().contains(customer)) {
                         getCustomers().add(customer);
@@ -58,23 +58,21 @@ public final class CustomerQuery implements Lookup.Provider {
                 dao.save(customer);
             }
         });
-        
+        // ...and a "Creatable" ability to this entity:
+        instanceContent.add(new CreatableEntityCapability() {
+            @Override
+            public void create(Customer customer) throws Exception {
+                dao.create(customer);
+            }
+        });
+
     }
     
-    public String getSqlstring() {
-        return sqlstring;
-    }
-    public void setSqlstring(String sqlstring) {
-        this.sqlstring = sqlstring;
-    }
-    @Override
-    public String toString() {
-        return sqlstring;
-    }
     @Override
     public Lookup getLookup() {
         return lookup;
     }
+    
     public List<Customer> getCustomers() {
         return customers;
     }
