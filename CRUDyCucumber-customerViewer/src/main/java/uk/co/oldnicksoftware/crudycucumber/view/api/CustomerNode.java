@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.oldnicksoftware.crudycucumber.api;
+package uk.co.oldnicksoftware.crudycucumber.view.api;
 
 import java.beans.IntrospectionException;
 import org.openide.nodes.BeanNode;
@@ -11,6 +11,7 @@ import org.openide.nodes.Children;
 import org.openide.util.datatransfer.NewType;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
+import uk.co.oldnicksoftware.crudycucumber.api.ReloadableViewCapability;
 import uk.co.oldnicksoftware.crudycucumber.dao.CustomerQuery;
 import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
 

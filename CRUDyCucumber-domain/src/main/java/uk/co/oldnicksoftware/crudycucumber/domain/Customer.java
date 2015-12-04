@@ -6,16 +6,22 @@
 package uk.co.oldnicksoftware.crudycucumber.domain;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -37,7 +43,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Customer.findByFax", query = "SELECT c FROM Customer c WHERE c.fax = :fax"),
     @NamedQuery(name = "Customer.findByEmail", query = "SELECT c FROM Customer c WHERE c.email = :email"),
     @NamedQuery(name = "Customer.findByCreditLimit", query = "SELECT c FROM Customer c WHERE c.creditLimit = :creditLimit")})
-public class Customer implements Serializable, DefaultableEntity {
+public class Customer implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
+    private Collection<PurchaseOrder> purchaseOrderCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -196,9 +204,13 @@ public class Customer implements Serializable, DefaultableEntity {
         return "uk.co.oldnicksoftware.crudycucucmber.model.Customer[ customerId=" + customerId + " ]";
     }
 
-    @Override
-    public void buildDefault() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @XmlTransient
+    public Collection<PurchaseOrder> getPurchaseOrderCollection() {
+        return purchaseOrderCollection;
+    }
+
+    public void setPurchaseOrderCollection(Collection<PurchaseOrder> purchaseOrderCollection) {
+        this.purchaseOrderCollection = purchaseOrderCollection;
     }
     
 }

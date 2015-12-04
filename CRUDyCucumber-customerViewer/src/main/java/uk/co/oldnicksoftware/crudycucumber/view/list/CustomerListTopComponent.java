@@ -5,7 +5,7 @@
  */
 package uk.co.oldnicksoftware.crudycucumber.view.list;
 
-import uk.co.oldnicksoftware.crudycucumber.api.RootNode;
+import uk.co.oldnicksoftware.crudycucumber.view.api.RootNode;
 import java.beans.PropertyChangeEvent;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;

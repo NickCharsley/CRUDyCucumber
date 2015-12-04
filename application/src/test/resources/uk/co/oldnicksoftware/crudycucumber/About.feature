@@ -1,3 +1,4 @@
+@wip
 Feature: About Box
    As a User
    I want to be able to show and hide the about box

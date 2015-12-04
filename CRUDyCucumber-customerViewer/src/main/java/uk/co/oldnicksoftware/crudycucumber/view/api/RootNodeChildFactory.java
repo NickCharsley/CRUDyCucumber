@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.oldnicksoftware.crudycucumber.api;
+package uk.co.oldnicksoftware.crudycucumber.view.api;
 
-import uk.co.oldnicksoftware.crudycucumber.api.CustomerNode;
 import java.beans.IntrospectionException;
 import java.util.List;
 import org.openide.nodes.ChildFactory;

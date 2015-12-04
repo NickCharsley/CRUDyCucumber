@@ -11,6 +11,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
+import uk.co.oldnicksoftware.crudycucumber.domain.DiscountCode;
+import uk.co.oldnicksoftware.crudycucumber.domain.MicroMarket;
 
 /**
  *
@@ -49,7 +51,24 @@ public class CustomerSearchDAO {
 
     public void create(Customer customer) {
         createTransactionalEntityManager();
-        customer.buildDefault();
+        //This is Fake so we just need the first MicroMarket and Discount Code
+        if (customer.getDiscountCode()==null){
+            List<DiscountCode> dcList = entityManager
+                                            .createNamedQuery("DiscountCode.findAll")
+                                            .getResultList();
+            if (!dcList.isEmpty()){
+                customer.setDiscountCode(dcList.get(0));
+            }
+        }
+        if (customer.getZip()==null){
+            List<MicroMarket> mmList = entityManager
+                                            .createNamedQuery("MicroMarket.findAll")
+                                            .getResultList();
+            if (!mmList.isEmpty()){
+                customer.setZip(mmList.get(0));
+            }
+        }
+        
         entityManager.persist(customer);
         closeTransactionalEntityManager();
     }

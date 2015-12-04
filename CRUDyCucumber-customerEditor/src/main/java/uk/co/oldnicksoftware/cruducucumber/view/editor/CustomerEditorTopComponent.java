@@ -298,17 +298,8 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
                 } catch (Exception ex) {
                     Exceptions.printStackTrace(ex);
                 }
-                ReloadableEntityCapability r = query.getLookup().lookup(ReloadableEntityCapability.class);
-                try {
-                    r.reload();
-                } catch (Exception e) {
-                }
-                ReloadableViewCapability rvc = customerNode.getLookup().lookup(ReloadableViewCapability.class);
-                try {
-                    rvc.reloadChildren();
-                } catch (Exception ex) {
-                    Exceptions.printStackTrace(ex);
-                }
+                query.reload(customerNode);
+                
                 nameText=nameField.getText();
                 cityText=cityField.getText();
             }

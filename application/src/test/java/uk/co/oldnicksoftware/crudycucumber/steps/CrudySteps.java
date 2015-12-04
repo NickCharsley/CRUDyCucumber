@@ -2,9 +2,7 @@ package uk.co.oldnicksoftware.crudycucumber.steps;
 
 import cucumber.api.DataTable;
 import cucumber.api.java.en.*;
-import cucumber.api.jelly.Helper;
 import cucumber.runtime.PendingException;
-import java.awt.event.KeyEvent;
 import java.util.Map;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
@@ -12,7 +10,7 @@ import org.netbeans.jellytools.*;
 import org.netbeans.jellytools.actions.ActionNoBlock;
 import org.netbeans.jemmy.operators.*;
 import org.openide.explorer.ExplorerManager;
-import uk.co.oldnicksoftware.crudycucumber.api.RootNode;
+import uk.co.oldnicksoftware.crudycucumber.view.api.RootNode;
 
 /**
  *
@@ -36,28 +34,6 @@ public class CrudySteps {
     public void clickMenu(String menu) throws Throwable {
         new ActionNoBlock(menu, null).performMenu();
     }
-
-    @Then("^(?:T|t)he \"([^\"]*)\" Dialog is (displayed|hidden)$")
-    public void dialogVisability(String dialog,String displayed) throws Throwable {
-        boolean shown=displayed.equals("displayed");
-        
-        assertThat("The '"+dialog+"' Dialog is Visable"
-                ,Helper.dialogVisable(dialog,shown)
-                ,is(shown));
-    }
-
-    @When("^I click the \"([^\"]*)\" (ok|close) button$")
-    public void clickCloseButton(String dialog,String button) throws Throwable {
-        NbDialogOperator doD=new NbDialogOperator(dialog); 
-        switch (button) {
-            case "close":
-                doD.closeByButton();
-                break;
-            case "ok":               
-                doD.pushKey(KeyEvent.VK_ENTER);
-                break;
-        }
-    }    
     
     @Then("^I have (?:a|an) \"([^\"]*)\" Panel$")
     public void haveAPanel(String panel) throws Throwable {

@@ -16,6 +16,9 @@ import uk.co.oldnicksoftware.crudycucumber.api.CreatableEntityCapability;
 import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
 import uk.co.oldnicksoftware.crudycucumber.api.ReloadableEntityCapability;
 import uk.co.oldnicksoftware.crudycucumber.api.SaveableEntityCapability;
+import org.openide.nodes.Node;
+import org.openide.util.Exceptions;
+import uk.co.oldnicksoftware.crudycucumber.api.ReloadableViewCapability;
 
 /**
  *
@@ -43,6 +46,7 @@ public final class CustomerQuery implements Lookup.Provider {
                 handle.start();
                 //getCustomers().clear();
                 List<Customer> result = dao.search();
+                getCustomers().clear();
                 for (Customer customer : result) {
                     if (!getCustomers().contains(customer)) {
                         getCustomers().add(customer);
@@ -75,5 +79,17 @@ public final class CustomerQuery implements Lookup.Provider {
     
     public List<Customer> getCustomers() {
         return customers;
+    }
+    
+    public void reload(Node rootNode){
+        try {
+            //Refresh the list of customers via the implementation of the reload capability:
+            ReloadableEntityCapability r = this.getLookup().lookup(ReloadableEntityCapability.class);
+            r.reload();
+            ReloadableViewCapability rvc = rootNode.getLookup().lookup(ReloadableViewCapability.class);    
+            rvc.reloadChildren();
+        } catch (Exception ex) {
+            Exceptions.printStackTrace(ex);
+        }
     }
 }
