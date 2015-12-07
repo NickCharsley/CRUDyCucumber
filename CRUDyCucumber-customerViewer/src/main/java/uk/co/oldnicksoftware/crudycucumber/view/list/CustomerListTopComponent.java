@@ -17,9 +17,10 @@ import org.openide.nodes.NodeEvent;
 import org.openide.nodes.NodeListener;
 import org.openide.nodes.NodeMemberEvent;
 import org.openide.nodes.NodeReorderEvent;
+import org.openide.util.Lookup;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
-import uk.co.oldnicksoftware.crudycucumber.dao.CustomerQuery;
+import uk.co.oldnicksoftware.crudycucumber.api.CustomerCollection;
 
 /**
  * Top component which displays something.
@@ -59,7 +60,8 @@ public final class CustomerListTopComponent extends TopComponent implements Expl
         putClientProperty(TopComponent.PROP_SLIDING_DISABLED, Boolean.TRUE);
         putClientProperty(TopComponent.PROP_UNDOCKING_DISABLED, Boolean.TRUE);
 
-        CustomerQuery query = new CustomerQuery();
+   //     CustomerQuery query = new CustomerQuery();
+        CustomerCollection query = Lookup.getDefault().lookup(CustomerCollection.class);
         RootNode node = new RootNode(query);
         explorerManager.setRootContext(node);
         

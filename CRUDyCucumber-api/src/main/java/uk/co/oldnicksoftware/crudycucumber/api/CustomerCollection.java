@@ -5,12 +5,16 @@
  */
 package uk.co.oldnicksoftware.crudycucumber.api;
 
-import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
+import java.util.List;
+import org.openide.util.Lookup;
+import org.openide.nodes.Node;
 
 /**
  *
  * @author nick
  */
-public interface RemovableEntityCapability {
-    public void remove(Customer customer) throws Exception;
+public interface CustomerCollection {
+    public Lookup getLookup();
+    public List getCustomers();
+    public void reload(Node rootNode);
 }

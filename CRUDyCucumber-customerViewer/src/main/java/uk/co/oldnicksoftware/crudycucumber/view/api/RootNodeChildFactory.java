@@ -15,17 +15,17 @@ import org.openide.nodes.NodeListener;
 import org.openide.nodes.NodeMemberEvent;
 import org.openide.nodes.NodeReorderEvent;
 import org.openide.util.Exceptions;
+import uk.co.oldnicksoftware.crudycucumber.api.CustomerCollection;
 import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
-import uk.co.oldnicksoftware.crudycucumber.api.ReloadableEntityCapability;
-import uk.co.oldnicksoftware.crudycucumber.dao.CustomerQuery;
+import uk.co.oldnicksoftware.crudycucumber.api.capabilities.ReloadableEntityCapability;
 
 /**
  *
  * @author nick
  */
 public class RootNodeChildFactory extends ChildFactory<Customer> implements NodeListener{
-    private CustomerQuery query;
-    public RootNodeChildFactory(CustomerQuery query) {
+    private final CustomerCollection query;
+    public RootNodeChildFactory(CustomerCollection query) {
         this.query = query;
     }
     @Override

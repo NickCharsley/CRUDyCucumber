@@ -5,6 +5,7 @@
  */
 package uk.co.oldnicksoftware.cruducucumber.view.editor;
 
+import uk.co.oldnicksoftware.crudycucumber.api.capabilities.SaveableEntityCapability;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -29,8 +30,7 @@ import org.openide.util.datatransfer.NewType;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 import org.openide.windows.WindowManager;
-import uk.co.oldnicksoftware.crudycucumber.api.*;
-import uk.co.oldnicksoftware.crudycucumber.dao.CustomerQuery;
+import uk.co.oldnicksoftware.crudycucumber.api.CustomerCollection;
 import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
 
 /**
@@ -60,8 +60,8 @@ import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
 public final class CustomerEditorTopComponent extends TopComponent implements LookupListener {
     private Lookup.Result<Node> customerNodeResult;
     private Lookup.Result<Customer> customerResult;
-    private Lookup.Result<CustomerQuery> customerQueryResult;
-    private CustomerQuery query;
+    private Lookup.Result<CustomerCollection> customerQueryResult;
+    private CustomerCollection query;
     private Customer customer;
     private Node customerNode;
 
@@ -163,7 +163,7 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
     public void componentOpened() {
         customerNodeResult = context().lookupResult(Node.class);
         customerResult = context().lookupResult(Customer.class);
-        customerQueryResult = context().lookupResult(CustomerQuery.class);
+        customerQueryResult = context().lookupResult(CustomerCollection.class);
         
         customerNodeResult.addLookupListener(this);
         customerQueryResult.addLookupListener(this);
@@ -203,7 +203,7 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
         Collection allQueries = customerQueryResult.allInstances();
         Iterator it1 = allQueries.iterator();
         while (it1.hasNext()) {
-            query = (CustomerQuery)it1.next();
+            query = (CustomerCollection)it1.next();
             setDisplayName("Customers");
         }
         //Get the customer:

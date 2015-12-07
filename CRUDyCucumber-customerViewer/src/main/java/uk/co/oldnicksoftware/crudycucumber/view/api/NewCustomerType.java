@@ -16,11 +16,9 @@ import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.datatransfer.NewType;
-import uk.co.oldnicksoftware.crudycucumber.api.CreatableEntityCapability;
-import uk.co.oldnicksoftware.crudycucumber.api.ReloadableEntityCapability;
-import uk.co.oldnicksoftware.crudycucumber.api.ReloadableViewCapability;
+import uk.co.oldnicksoftware.crudycucumber.api.CustomerCollection;
+import uk.co.oldnicksoftware.crudycucumber.api.capabilities.CreatableEntityCapability;
 import static uk.co.oldnicksoftware.crudycucumber.view.api.Bundle.*;
-import uk.co.oldnicksoftware.crudycucumber.dao.CustomerQuery;
 import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
 
 @Messages({
@@ -28,11 +26,11 @@ import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
     "LBL_NewCity_dialog=Customer City:",
     "TITLE_NewCustomer_dialog=New Customer"})
 public class NewCustomerType extends NewType {
-    private final CustomerQuery query;
+    private final CustomerCollection query;
     private final Node node;
     private final boolean root;
     
-    public NewCustomerType(CustomerQuery query, Node node, boolean root) {
+    public NewCustomerType(CustomerCollection query, Node node, boolean root) {
         this.query = query;
         this.node = node;
         this.root = root;

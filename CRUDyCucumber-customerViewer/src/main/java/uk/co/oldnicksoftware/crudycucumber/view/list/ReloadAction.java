@@ -11,7 +11,7 @@ import org.openide.awt.ActionID;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.Exceptions;
 import org.openide.util.NbBundle.Messages;
-import uk.co.oldnicksoftware.crudycucumber.api.ReloadableViewCapability;
+import uk.co.oldnicksoftware.crudycucumber.api.capabilities.ReloadableViewCapability;
 
 /**
  *

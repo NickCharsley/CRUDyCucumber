@@ -15,9 +15,9 @@ import org.openide.util.actions.SystemAction;
 import org.openide.util.datatransfer.NewType;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
-import uk.co.oldnicksoftware.crudycucumber.api.ReloadableViewCapability;
-import uk.co.oldnicksoftware.crudycucumber.api.RemovableEntityCapability;
-import uk.co.oldnicksoftware.crudycucumber.dao.CustomerQuery;
+import uk.co.oldnicksoftware.crudycucumber.api.CustomerCollection;
+import uk.co.oldnicksoftware.crudycucumber.api.capabilities.ReloadableViewCapability;
+import uk.co.oldnicksoftware.crudycucumber.api.capabilities.RemovableEntityCapability;
 import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
 
 /**
@@ -27,11 +27,11 @@ import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
 public class CustomerNode extends BeanNode {
     private NewCustomerType newCustomer;
     
-    public CustomerNode(Customer customer, CustomerQuery query)  throws IntrospectionException {
+    public CustomerNode(Customer customer, CustomerCollection query)  throws IntrospectionException {
         this(customer, query, new InstanceContent());
     }
     
-    private CustomerNode(final Customer customer, final CustomerQuery query, InstanceContent instanceContent)  throws IntrospectionException {
+    private CustomerNode(final Customer customer, final CustomerCollection query, InstanceContent instanceContent)  throws IntrospectionException {
         super(customer, Children.LEAF, new AbstractLookup(instanceContent)); 
         instanceContent.add(customer);
         instanceContent.add(query);
@@ -61,7 +61,7 @@ public class CustomerNode extends BeanNode {
     @Override
     public void destroy() throws IOException {
         Customer customer = getLookup().lookup(Customer.class);
-        CustomerQuery query = getLookup().lookup(CustomerQuery.class);
+        CustomerCollection query = getLookup().lookup(CustomerCollection.class);
         RemovableEntityCapability cec = query.getLookup().lookup(RemovableEntityCapability.class);
         try {
             cec.remove(customer);

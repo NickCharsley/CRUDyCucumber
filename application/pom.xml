@@ -64,16 +64,10 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>CRUDyCucumber-customerViewer</artifactId>
             <version>${project.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>uk.co.oldnicksoftware</groupId>
-                    <artifactId>CRUDyCucucmber-customerLibrary</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>CRUDyCucumber-customerLibrary</artifactId>
+            <artifactId>CRUDyCucumber-derbyCustomerLibrary</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

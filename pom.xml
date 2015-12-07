@@ -61,8 +61,8 @@
         <module>CRUDyCucumber-api</module>
         <module>CRUDyCucumber-domain</module>
         <module>CRUDyCucumber-customerViewer</module>
-        <module>CRUDyCucumber-customerLibrary</module>
         <module>CRUDyCucumber-customerEditor</module>
+        <module>CRUDyCucumber-derbyCustomerLibrary</module>
     </modules>
 
     <dependencies>
