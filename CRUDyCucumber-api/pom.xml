@@ -18,6 +18,7 @@
                 <configuration>
                     <publicPackages>
                         <publicPackage>uk.co.oldnicksoftware.crudycucumber.api</publicPackage>
+                        <publicPackage>uk.co.oldnicksoftware.crudycucumber.api.capabilities</publicPackage>
                     </publicPackages>
                 </configuration>
             </plugin>
@@ -34,6 +35,16 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-api-annotations-common</artifactId>
+            <version>${netbeans.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-nodes</artifactId>
+            <version>${netbeans.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-util-lookup</artifactId>
             <version>${netbeans.version}</version>
         </dependency>
         <dependency>

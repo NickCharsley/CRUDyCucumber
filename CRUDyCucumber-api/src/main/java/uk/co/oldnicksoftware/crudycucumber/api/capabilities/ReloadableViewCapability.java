@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.oldnicksoftware.crudycucumber.api;
-
-import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
+package uk.co.oldnicksoftware.crudycucumber.api.capabilities;
 
 /**
  *
  * @author nick
  */
-public interface SaveableEntityCapability {
-    public void save(Customer customer) throws Exception;
+public interface ReloadableViewCapability {
+    public void reloadChildren() throws Exception;
 }

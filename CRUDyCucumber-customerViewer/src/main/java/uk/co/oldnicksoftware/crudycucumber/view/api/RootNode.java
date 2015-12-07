@@ -13,22 +13,22 @@ import org.openide.util.Utilities;
 import org.openide.util.datatransfer.NewType;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
-import uk.co.oldnicksoftware.crudycucumber.api.ReloadableViewCapability;
-import uk.co.oldnicksoftware.crudycucumber.dao.CustomerQuery;
+import uk.co.oldnicksoftware.crudycucumber.api.CustomerCollection;
+import uk.co.oldnicksoftware.crudycucumber.api.capabilities.ReloadableViewCapability;
 
 /**
  *
  * @author nick
  */
 public class RootNode extends AbstractNode {
-    private CustomerQuery query;
+    private CustomerCollection query;
     private InstanceContent instanceContent;
     private NewCustomerType newCustomer;   
     
-    public RootNode(CustomerQuery query) {
+    public RootNode(CustomerCollection query) {
         this(query, new InstanceContent());
     }
-    private RootNode(CustomerQuery query, InstanceContent ic) {
+    private RootNode(CustomerCollection query, InstanceContent ic) {
         super(Children.create(new RootNodeChildFactory(query), true), new AbstractLookup(ic));
         this.query = query;
         this.instanceContent = ic;

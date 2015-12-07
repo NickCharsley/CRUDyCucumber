@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.oldnicksoftware.crudycucumber.dao;
+package uk.co.oldnicksoftware.crudycucumber.derby.customerservice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,33 +12,36 @@ import org.netbeans.api.progress.ProgressHandleFactory;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
-import uk.co.oldnicksoftware.crudycucumber.api.CreatableEntityCapability;
+import uk.co.oldnicksoftware.crudycucumber.api.capabilities.CreatableEntityCapability;
 import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
-import uk.co.oldnicksoftware.crudycucumber.api.ReloadableEntityCapability;
-import uk.co.oldnicksoftware.crudycucumber.api.SaveableEntityCapability;
+import uk.co.oldnicksoftware.crudycucumber.api.capabilities.ReloadableEntityCapability;
+import uk.co.oldnicksoftware.crudycucumber.api.capabilities.SaveableEntityCapability;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
-import uk.co.oldnicksoftware.crudycucumber.api.ReloadableViewCapability;
-import uk.co.oldnicksoftware.crudycucumber.api.RemovableEntityCapability;
+import org.openide.util.lookup.ServiceProvider;
+import uk.co.oldnicksoftware.crudycucumber.api.CustomerCollection;
+import uk.co.oldnicksoftware.crudycucumber.api.capabilities.ReloadableViewCapability;
+import uk.co.oldnicksoftware.crudycucumber.api.capabilities.RemovableEntityCapability;
 
 /**
  *
  * @author nick
  */
-public final class CustomerQuery implements Lookup.Provider {
+@ServiceProvider(service = CustomerCollection.class)
+public final class DerbyCustomerCollection implements CustomerCollection {
 
     private final List<Customer> customers;
     private final Lookup lookup;
     private final InstanceContent instanceContent;
-    private CustomerSearchDAO dao;
+    private DerbyCustomerDAO dao;
     
-    public CustomerQuery() {
+    public DerbyCustomerCollection() {
         customers = new ArrayList<>();
         // Create an InstanceContent to hold abilities...
         instanceContent = new InstanceContent();
         // Create an AbstractLookup to expose InstanceContent contents...
         lookup = new AbstractLookup(instanceContent);
-        dao = new CustomerSearchDAO();        
+        dao = new DerbyCustomerDAO();        
         // Add a "Reloadable" ability to this entity:
         instanceContent.add(new ReloadableEntityCapability() {
             @Override
@@ -86,10 +89,12 @@ public final class CustomerQuery implements Lookup.Provider {
         return lookup;
     }
     
+    @Override
     public List<Customer> getCustomers() {
         return customers;
     }
     
+    @Override
     public void reload(Node rootNode){
         try {
             //Refresh the list of customers via the implementation of the reload capability:
