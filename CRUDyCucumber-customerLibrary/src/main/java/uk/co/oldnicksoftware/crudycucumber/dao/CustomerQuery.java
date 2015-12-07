@@ -19,6 +19,7 @@ import uk.co.oldnicksoftware.crudycucumber.api.SaveableEntityCapability;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
 import uk.co.oldnicksoftware.crudycucumber.api.ReloadableViewCapability;
+import uk.co.oldnicksoftware.crudycucumber.api.RemovableEntityCapability;
 
 /**
  *
@@ -38,7 +39,7 @@ public final class CustomerQuery implements Lookup.Provider {
         // Create an AbstractLookup to expose InstanceContent contents...
         lookup = new AbstractLookup(instanceContent);
         dao = new CustomerSearchDAO();        
-        // Add a "Reloadable" ability to this entity
+        // Add a "Reloadable" ability to this entity:
         instanceContent.add(new ReloadableEntityCapability() {
             @Override
             public void reload() throws Exception {
@@ -55,19 +56,27 @@ public final class CustomerQuery implements Lookup.Provider {
                 handle.finish();
             }
         });
-        // Add a "Savable" ability to this entity
+        // ... and a "Savable" ability:
         instanceContent.add(new SaveableEntityCapability() {
             @Override
             public void save(Customer customer) throws Exception {
                 dao.save(customer);
             }
         });
-        // ...and a "Creatable" ability to this entity:
+        // ...and a "Creatable" ability:
         instanceContent.add(new CreatableEntityCapability() {
             @Override
             public void create(Customer customer) throws Exception {
                 dao.create(customer);
             }
+        });
+        // ... and a "Removeable" ability:
+        instanceContent.add(new RemovableEntityCapability(){
+            @Override
+            public void remove(Customer customer) throws Exception {
+                dao.remove(customer);
+                getCustomers().remove(customer);
+            }            
         });
 
     }

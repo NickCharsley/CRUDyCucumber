@@ -6,12 +6,17 @@
 package uk.co.oldnicksoftware.crudycucumber.view.api;
 
 import java.beans.IntrospectionException;
+import java.io.IOException;
+import javax.swing.Action;
+import org.openide.actions.DeleteAction;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.Children;
+import org.openide.util.actions.SystemAction;
 import org.openide.util.datatransfer.NewType;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 import uk.co.oldnicksoftware.crudycucumber.api.ReloadableViewCapability;
+import uk.co.oldnicksoftware.crudycucumber.api.RemovableEntityCapability;
 import uk.co.oldnicksoftware.crudycucumber.dao.CustomerQuery;
 import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
 
@@ -44,5 +49,26 @@ public class CustomerNode extends BeanNode {
     @Override
     public NewType[] getNewTypes() {
         return new NewType[]{newCustomer};
+    }
+    @Override
+    public Action[] getActions(boolean context) {
+        return new Action[]{(SystemAction.get(DeleteAction.class))};
+    }
+    @Override
+    public boolean canDestroy() {
+        return true;
+    }
+    @Override
+    public void destroy() throws IOException {
+        Customer customer = getLookup().lookup(Customer.class);
+        CustomerQuery query = getLookup().lookup(CustomerQuery.class);
+        RemovableEntityCapability cec = query.getLookup().lookup(RemovableEntityCapability.class);
+        try {
+            cec.remove(customer);
+        } catch (Exception e) {
+        }
+        //Notify the NodeListener in the RootNodeChildFactory,
+        //where nodeDestroyed will call refresh on the ChildFactory:
+        fireNodeDestroyed();
     }
 }

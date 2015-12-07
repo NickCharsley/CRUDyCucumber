@@ -9,13 +9,9 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import cucumber.api.jelly.Helper;
 import cucumber.runtime.PendingException;
-import javax.swing.JTextField;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import org.netbeans.jellytools.NbDialogOperator;
-import org.netbeans.jemmy.operators.JLabelOperator;
-import org.netbeans.jemmy.operators.JTextFieldOperator;
 
 /**
  *
@@ -36,18 +32,24 @@ public class CrudyDialogs {
                 ,is(shown));
     }
     
-    @When("^I click the \"([^\"]*)\" (ok|close|cancel) button$")
+    @When("^I click the \"([^\"]*)\" (ok|close|cancel|yes|no) button$")
     public void clickTheButton(String dialog,String button) throws Throwable {
         NbDialogOperator doD=new NbDialogOperator(dialog); 
-        switch (button) {
-            case "close":
-                doD.closeByButton();
-                break;
+        switch (button.toLowerCase()) {
             case "ok":               
                 doD.ok();
                 break;
+            case "close":
+                doD.closeByButton();
+                break;
             case "cancel":
                 doD.cancel();                
+                break;
+            case "yes":               
+                doD.yes();
+                break;
+            case "no":               
+                doD.no();
                 break;
         }
     }    

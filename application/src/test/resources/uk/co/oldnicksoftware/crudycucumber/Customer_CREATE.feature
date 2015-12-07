@@ -28,6 +28,13 @@ Given "Jumbo Eagle Corp II" is selected in the "CustomerList Window" Panel's Nod
   And I select the "CustomerEditor Window" Panel's "Name:" 
  Then the "&File" toolbar Item "New" is enabled
 
+Scenario: New Customer Popup Available
+    Only the Root Node of the Customer List has the New Customer Menu
+Given "Customers" is selected in the "CustomerList Window" Panel's Node List 
+ Then The "CustomerList Window" Panel's ROOT NODE has a popup menu item "New Customer"
+  And The "CustomerList Window" Panel's FIRST NODE doesnot have a popup menu item "New Customer"
+  And The "CustomerList Window" Panel's LAST NODE doesnot have a popup menu item "New Customer"
+
 Scenario: New Customer Window(s) appear and can be Canceled
     If we press the New Toolbar button then the correct dialogs are displayed
     they contain the correct fields and can then be canceled.

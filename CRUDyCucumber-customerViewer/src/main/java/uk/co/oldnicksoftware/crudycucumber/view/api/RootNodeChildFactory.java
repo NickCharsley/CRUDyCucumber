@@ -6,9 +6,14 @@
 package uk.co.oldnicksoftware.crudycucumber.view.api;
 
 import java.beans.IntrospectionException;
+import java.beans.PropertyChangeEvent;
 import java.util.List;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Node;
+import org.openide.nodes.NodeEvent;
+import org.openide.nodes.NodeListener;
+import org.openide.nodes.NodeMemberEvent;
+import org.openide.nodes.NodeReorderEvent;
 import org.openide.util.Exceptions;
 import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
 import uk.co.oldnicksoftware.crudycucumber.api.ReloadableEntityCapability;
@@ -18,7 +23,7 @@ import uk.co.oldnicksoftware.crudycucumber.dao.CustomerQuery;
  *
  * @author nick
  */
-public class RootNodeChildFactory extends ChildFactory<Customer> {
+public class RootNodeChildFactory extends ChildFactory<Customer> implements NodeListener{
     private CustomerQuery query;
     public RootNodeChildFactory(CustomerQuery query) {
         this.query = query;
@@ -40,13 +45,37 @@ public class RootNodeChildFactory extends ChildFactory<Customer> {
         // And return true since we're all set
         return true;
     }
+    
     @Override
     protected Node createNodeForKey(Customer key) {
         try {
-            return new CustomerNode(key,query);
+            CustomerNode cn= new CustomerNode(key,query);
+            cn.addNodeListener(this);
+            return cn;
         } catch (IntrospectionException ex) {
             Exceptions.printStackTrace(ex);
         }
         return null; 
+    }
+
+    @Override
+    public void childrenAdded(NodeMemberEvent ev) {
+    }
+
+    @Override
+    public void childrenRemoved(NodeMemberEvent ev) {
+    }
+
+    @Override
+    public void childrenReordered(NodeReorderEvent ev) {
+    }
+
+    @Override
+    public void nodeDestroyed(NodeEvent ev) {
+        refresh(true);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
     }
 }

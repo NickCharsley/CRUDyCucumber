@@ -13,13 +13,26 @@
                 <attr name="noIconInMenu" boolvalue="false"/>
             </file>
         </folder>
-    </folder>
+        <folder name="LeafCustomer">
+            <file name="org-openide-actions-DeleteAction.instance">
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.callback"/>
+                <attr name="key" stringvalue="delete"/>
+                <attr name="iconBase" stringvalue="uk/co/oldnicksoftware/crudycucumber/customerviewer/delete.png"/>
+                <attr name="displayName" stringvalue="Delete Customer"/>
+                <attr name="noIconInMenu" boolvalue="false"/>
+            </file>
+        </folder>
+    </folder>    
     <folder name="Toolbars">
         <folder name="File">
             <file name="org-openide-actions-NewAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/Customer/org-openide-actions-NewAction.instance"/>
                 <attr name="position" intvalue="10"/>
             </file>
+            <file name="org-openide-actions-DeleteAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/LeafCustomer/org-openide-actions-DeleteAction.instance"/>
+                <attr name="position" intvalue="20"/>
+            </file>            
         </folder>
     </folder>
 </filesystem>

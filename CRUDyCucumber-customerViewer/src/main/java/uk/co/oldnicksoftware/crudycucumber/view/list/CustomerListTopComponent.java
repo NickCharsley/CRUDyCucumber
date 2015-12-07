@@ -7,6 +7,7 @@ package uk.co.oldnicksoftware.crudycucumber.view.list;
 
 import uk.co.oldnicksoftware.crudycucumber.view.api.RootNode;
 import java.beans.PropertyChangeEvent;
+import javax.swing.ActionMap;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -61,9 +62,12 @@ public final class CustomerListTopComponent extends TopComponent implements Expl
         CustomerQuery query = new CustomerQuery();
         RootNode node = new RootNode(query);
         explorerManager.setRootContext(node);
-        //setLayout(new BorderLayout());
-        //add(new BeanTreeView(), BorderLayout.CENTER);
-        associateLookup(ExplorerUtils.createLookup(explorerManager, getActionMap()));
+        
+        ActionMap map = getActionMap();
+        map.put("delete", ExplorerUtils.actionDelete(explorerManager, true)); // NOI18N
+        
+        associateLookup(ExplorerUtils.createLookup(explorerManager, map));
+        
         node.addNodeListener(new NodeListener(){ 
 
             @Override

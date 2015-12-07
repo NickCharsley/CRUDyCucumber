@@ -8,8 +8,9 @@ Currently this has:
 <ol>
 <li>The compleat First Step (Tagged Reloadable), from https://dzone.com/articles/loosely-coupled-reloadable-capabilities.</li>
 <li>The compleat Second Step (Tagged Savable), from https://dzone.com/articles/loosely-coupled-saveable-capabilities.</li>
-<li>The compleat Third Step (Tagged Creatable), from https://dzone.com/articles/loosely-coupled-creatable-capabilities.
-<li>Some Feature Files and Step Files to test the above (Tagged Savable-Tests).</li>
+<li>The compleat Third Step (Tagged Creatable), from https://dzone.com/articles/loosely-coupled-creatable-capabilities.</li>
+<li>The compleat Fourth Step (Tagged Deletable), from https://dzone.com/articles/loosely-coupled-deletable-capabilities</li>
+<li>Some Feature Files and Step Files to test the above.</li>
 </ol>
 
 N.B. In the articles between the Second and Third Steps Geertjan switches from the Derby Sample Database due to issues with saving. A later comment appears to indicate how to avoid this issue, so this is Continued with the customer database.

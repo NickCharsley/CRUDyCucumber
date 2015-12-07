@@ -27,17 +27,28 @@ public class CrudyNodes {
         // Just exists to keep PendingException as an import
         throw new PendingException();
     }   
-    
-    @Then("^(?:T|t)he \"([^\"]*)\" Panel's (ROOT NODE) has a (popup menu) item \"([^\"]*)\"$")
-    public void nodeHasMenuItem(String panel,String node, String menu, String item) throws Throwable {
+
+    @Then("^(?:T|t)he \"([^\"]*)\" Panel's (ROOT|FIRST|LAST) NODE (has a|has no|doesnot have a|doesn't have a) (popup menu) item \"([^\"]*)\"$")
+    public void nodeHasMenuItem(String panel,String node, String menuState, String menu, String item) throws Throwable {
         TopComponentOperator tco=  new TopComponentOperator(panel);        
         JTreeOperator tree = new JTreeOperator(tco);        
-        TreePath root=tree.findPath("");
+        TreePath path=tree.findPath("");
+        Node opNode;
+        if (node.equalsIgnoreCase("first")){
+            opNode=new Node(tree,path);
+            opNode=new Node(opNode,0);
+            path=opNode.getTreePath();
+        }
+        else if (node.equalsIgnoreCase("last")){
+            int children=tree.getChildCount(tree.getRoot());
+            opNode=new Node(tree,path);
+            opNode=new Node(opNode,children-1);
+            path=opNode.getTreePath();            
+        }
         boolean found=false;
         
-        assertThat("Found the "+node,root,is(notNullValue()));
-
-        JPopupMenuOperator popup = new JPopupMenuOperator(tree.callPopupOnPath(root));
+        assertThat("Found the "+node,path,is(notNullValue()));
+        JPopupMenuOperator popup = new JPopupMenuOperator(tree.callPopupOnPath(path));
         for (MenuElement me: popup.getSubElements()){
             String val=me.toString();
             if (val.contains(item)) {
@@ -46,7 +57,7 @@ public class CrudyNodes {
             }
         }        
         popup.pushKey(KeyEvent.VK_ESCAPE);
-        assertThat("Found the Menu Item "+item,found,is(true));
+        assertThat("Found the Menu Item "+item,found,is(menuState.equals("has a")));
     }
     
     @Then("^(?:T|t)he \"([^\"]*)\" Panel's (ROOT|FIRST|LAST) NODE is \"([^\"]*)\"$")

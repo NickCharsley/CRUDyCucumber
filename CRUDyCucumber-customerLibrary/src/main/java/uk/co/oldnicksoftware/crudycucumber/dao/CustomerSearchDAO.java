@@ -13,6 +13,7 @@ import javax.persistence.Query;
 import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
 import uk.co.oldnicksoftware.crudycucumber.domain.DiscountCode;
 import uk.co.oldnicksoftware.crudycucumber.domain.MicroMarket;
+import uk.co.oldnicksoftware.crudycucumber.domain.PurchaseOrder;
 
 /**
  *
@@ -70,6 +71,21 @@ public class CustomerSearchDAO {
         }
         
         entityManager.persist(customer);
+        closeTransactionalEntityManager();
+    }
+    
+    public void remove(Customer customer) {
+        createTransactionalEntityManager();
+        //N.B. we need to remove any Orders First!!!
+        entityManager
+                .createNamedQuery("PurchaseOrder.deleteByCustomerId")
+                .setParameter("customerId", customer)
+                .executeUpdate();
+        entityManager
+                .createNamedQuery("Customer.deleteByCustomerId")
+                .setParameter("customerId", customer.getCustomerId())
+                .executeUpdate();
+        
         closeTransactionalEntityManager();
     }
 }

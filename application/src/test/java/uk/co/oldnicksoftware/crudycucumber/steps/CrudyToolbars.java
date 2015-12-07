@@ -44,20 +44,6 @@ public class CrudyToolbars {
     public void toolbarItemState(String toolbar,String item,String state) throws Throwable {
         JButtonOperator ibo=toolbarItem(toolbar,item);
         assertThat("Found "+item+" on toolbar "+toolbar,ibo,is(notNullValue()));
-        /**
-         * As Toolbars 'respond' to other events they are sometimes tardy we
-         * allow sleep retry cycle. Currently allow 1 second if not the state we
-         * expect.
-         * 
-         * That said it may have been a real 'bug' so this was removed. Left 
-         * incase we decide that the issue is real.
-         * /
-        long endTime = System.currentTimeMillis()+(1000*10);
-
-        while (ibo.isEnabled()!=state.equalsIgnoreCase("enabled") && endTime > System.currentTimeMillis()){
-            Thread.sleep(10);
-        }
-        /**/
         assertThat(item+" is "+state,ibo.isEnabled(),is(state.equalsIgnoreCase("enabled")));
      }
    
