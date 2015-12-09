@@ -9,54 +9,54 @@ import cucumber.api.java.en.*;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
 import javax.swing.tree.TreePath;
 import org.netbeans.jellytools.TopComponentOperator;
 import org.netbeans.jemmy.operators.JPopupMenuOperator;
 import org.netbeans.jemmy.operators.JTreeOperator;
 import org.openide.util.Exceptions;
-import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
-import uk.co.oldnicksoftware.crudycucumber.domain.DiscountCode;
-import uk.co.oldnicksoftware.crudycucumber.domain.MicroMarket;
-import uk.co.oldnicksoftware.crudycucumber.domain.Product;
-import uk.co.oldnicksoftware.crudycucumber.domain.PurchaseOrder;
+import org.openide.util.Lookup;
+import uk.co.oldnicksoftware.crudycucumber.api.*;
+import uk.co.oldnicksoftware.crudycucumber.api.capabilities.*;
+import uk.co.oldnicksoftware.crudycucumber.domain.*;
 
 /**
  *
  * @author nick
  */
 public class CrudyPUSteps {
-    private final EntityManager entityManager;
-
+    private final CustomerCollection customerCollection;
+    private final PurchaseOrderCollection purchaseOrderCollection;
+    private final ProductCollection productCollection;
+    private final DiscountCodeCollection discountCodeCollection;
+    private final MicroMarketCollection microMarketCollection;
+    /**/
+        
     public CrudyPUSteps(){
-        entityManager = Persistence
-                .createEntityManagerFactory("CustomerPU")
-                .createEntityManager();
+        Lookup defaultLookup = Lookup.getDefault();
+        
+        customerCollection      = defaultLookup.lookup(CustomerCollection.class);
+        purchaseOrderCollection = defaultLookup.lookup(PurchaseOrderCollection.class);
+        productCollection       = defaultLookup.lookup(ProductCollection.class);
+        discountCodeCollection  = defaultLookup.lookup(DiscountCodeCollection.class);
+        microMarketCollection   = defaultLookup.lookup(MicroMarketCollection.class);
+
     }    
+    /**/
 
     private void addPurchaseOrder(Integer ORDER_NUM,Integer CUSTOMER_ID,Integer PRODUCT_ID,
                                   Integer QUANTITY,Double SHIPPING_COST,String SALES_DATE,
-                                  String SHIPPING_DATE,String FREIGHT_COMPANY){
-        PurchaseOrder po;
-        try {
-            po=(PurchaseOrder)entityManager
-                            .createNamedQuery("PurchaseOrder.findByOrderNum")
-                            .setParameter("orderNum",ORDER_NUM)               
-                            .getSingleResult();
-        } catch (NoResultException e){
-            po=new PurchaseOrder();
-            po.setOrderNum(ORDER_NUM);
-        }
-        Customer c=(Customer)entityManager
-                            .createNamedQuery("Customer.findByCustomerId")
-                            .setParameter("customerId",CUSTOMER_ID)
-                            .getSingleResult();      
-        Product p=(Product)entityManager
-                            .createNamedQuery("Product.findByProductId")
-                            .setParameter("productId", PRODUCT_ID)
-                            .getSingleResult();
+                                  String SHIPPING_DATE,String FREIGHT_COMPANY) throws Exception{
+
+        PurchaseOrder po=new PurchaseOrder();
+        po.setOrderNum(ORDER_NUM);
+        po=purchaseOrderCollection.getPurchaseOrder(po);
+        Customer c=new Customer();
+        c.setCustomerId(CUSTOMER_ID);
+        c=customerCollection.getCustomer(c);
+        Product p=new Product();
+        p.setProductId(PRODUCT_ID);
+        p=productCollection.getProduct(p);
+        
         po.setCustomerId(c);
         po.setProductId(p);
         po.setQuantity(Short.valueOf(QUANTITY.toString()));
@@ -72,35 +72,28 @@ public class CrudyPUSteps {
         } catch (ParseException ex) {
             Exceptions.printStackTrace(ex);
         }
-        po.setFreightCompany(FREIGHT_COMPANY);
-                
-        entityManager.getTransaction().begin();
-        entityManager.merge(po);
-        entityManager.getTransaction().commit();
+        po.setFreightCompany(FREIGHT_COMPANY);                        
+        
+        CreatableEntityCapability cec = purchaseOrderCollection.getLookup().lookup(CreatableEntityCapability.class);
+        cec.create(po);
     }    
     
     private void addCustomer(int CUSTOMER_ID,String DISCOUNT_CODE,String ZIP,
                              String NAME,String ADDRESSLINE1,String ADDRESSLINE2,
                              String CITY,String STATE,String PHONE,String FAX,
-                             String EMAIL,int CREDIT_LIMIT){
-        Customer c;
-        try {
-            c=(Customer)entityManager
-                            .createNamedQuery("Customer.findByCustomerId")
-                            .setParameter("customerId",CUSTOMER_ID)
-                            .getSingleResult();      
-        } catch (NoResultException e) {
-            c=new Customer();
-            c.setCustomerId(CUSTOMER_ID);
-        }
-        DiscountCode dc=(DiscountCode)entityManager
-                            .createNamedQuery("DiscountCode.findByDiscountCode")
-                            .setParameter("discountCode", DISCOUNT_CODE)
-                            .getSingleResult();
-        MicroMarket mm=(MicroMarket)entityManager
-                            .createNamedQuery("MicroMarket.findByZipCode")
-                            .setParameter("zipCode", ZIP)
-                            .getSingleResult();
+                             String EMAIL,int CREDIT_LIMIT) throws Exception{
+    /**/
+        Customer c=new Customer();
+        c.setCustomerId(CUSTOMER_ID);
+        c=customerCollection.getCustomer(c);
+    
+        DiscountCode dc=new DiscountCode();
+        dc.setDiscountCode(DISCOUNT_CODE);
+        dc=discountCodeCollection.getDiscountCode(dc);
+        
+        MicroMarket mm= new MicroMarket();
+        mm.setZipCode(ZIP);
+        mm=microMarketCollection.getMicroMarket(mm);
         
         c.setDiscountCode(dc);
         c.setZip(mm);
@@ -113,14 +106,12 @@ public class CrudyPUSteps {
         c.setFax(FAX);
         c.setEmail(EMAIL);
         c.setCreditLimit(CREDIT_LIMIT);
-
-        entityManager.getTransaction().begin();
-        entityManager.merge(c);        
-        entityManager.getTransaction().commit();
-
+    /**/    
+        CreatableEntityCapability cec = customerCollection.getLookup().lookup(CreatableEntityCapability.class);
+        cec.create(c);
     }
 
-    private void buildCustomers() {
+    private void buildCustomers() throws Exception {
         addCustomer(1,"N","95117","Jumbo Eagle Corp II","111 E. Las Olivas Blvd","Suite 51","Fort Lauderdale","FL","305-555-0188","305-555-0189","jumboeagle@example.com",100000);
         addCustomer(2,"M","95035","Old  Enterprises","9754 Main Street","P.O. Box 567","Miami","FL","305-555-0148","305-555-0149","www.new.example.com",50000);
         addCustomer(25,"M","85638","Wren Computers","8989 Red Albatross Drive","Suite 9897","Houston","TX","214-555-0133","214-555-0134","www.wrencomp.example.com",25000);
@@ -136,7 +127,7 @@ public class CrudyPUSteps {
         addCustomer(410,"M","10096","Yankee Computer Repair Ltd","9653 211th Ave","Floor 4","New York","NY","212-555-0191","212-555-0197","www.nycompltd@repair.example.com",25000);        
     }
     
-    private void buildPurchaseOrders(){
+    private void buildPurchaseOrders() throws Exception {
         addPurchaseOrder(10398001,1,980001,10,449.00,"2011-05-24","2011-05-24","Poney Express");
         addPurchaseOrder(10398002,2,980005,8,359.99,"2011-05-24","2011-05-24","Poney Express");
         addPurchaseOrder(10398003,2,980025,25,275.00,"2011-05-24","2011-05-24","Poney Express");
@@ -156,25 +147,27 @@ public class CrudyPUSteps {
     
     @Given("^I have (an empty|the test) Database$")
     public void haveADatabase(String databaseType) throws Throwable {
+        /**/
         //Need to perform in correct order...
         try {
             //Always empty first
-            entityManager.getTransaction().begin();
-            entityManager.createNamedQuery("PurchaseOrder.deleteAll").executeUpdate();
-            entityManager.createNamedQuery("Customer.deleteAll").executeUpdate();
-            entityManager.getTransaction().commit();
-
+            RemovableEntityCapability recCustomer= customerCollection.getLookup().lookup(RemovableEntityCapability.class);
+            recCustomer.removeAll();            
+            
             if (databaseType.equals("the test")){            
                 buildCustomers();
                 buildPurchaseOrders();
             }        
-        } finally {
+        } finally {            
             //Get View Window and Perform refresh...
+            /**/
             TopComponentOperator tco=  new TopComponentOperator("CustomerList Window");        
             JTreeOperator tree = new JTreeOperator(tco);     
             TreePath root=tree.findPath("");
             JPopupMenuOperator popup = new JPopupMenuOperator(tree.callPopupOnPath(root));
             popup.pushMenu("Reload");
+            /**/
         }
+        /**/
     }        
 }

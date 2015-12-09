@@ -18,6 +18,11 @@ The fifth and final step had some really wicked refactoring, un-exporting variou
 
 The final addition is to create the 'text' query and ensure it returned enough data to pass the cucumber tests.
 
+As part of this we also refactored the creation of test data. This involved making use of the loosely coupled data layer, and expanding it with the missing entity collections.
+
+
+
+
 N.B. In the articles between the Second and Third Steps Geertjan switches from the Derby Sample Database due to issues with saving. A later comment appears to indicate how to avoid this issue, so this is Continued with the customer database.
 
 

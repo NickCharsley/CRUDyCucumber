@@ -13,4 +13,5 @@ import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
  */
 public interface RemovableEntityCapability {
     public void remove(Customer customer) throws Exception;
+    public void removeAll() throws Exception;
 }

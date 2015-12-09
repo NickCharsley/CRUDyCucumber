@@ -5,13 +5,14 @@
  */
 package uk.co.oldnicksoftware.crudycucumber.api;
 
-import java.util.List;
-import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
+import org.openide.nodes.Node;
+import org.openide.util.Lookup;
 
 /**
+ *
  * @author nick
  */
-public interface CustomerCollection extends EntityCollection {
-    public List getCustomers();
-    public Customer getCustomer(Customer search);
+public interface EntityCollection {
+    public Lookup getLookup();
+    public void reload(Node rootNode);    
 }

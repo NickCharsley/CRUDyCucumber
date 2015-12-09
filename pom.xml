@@ -63,6 +63,7 @@
         <module>CRUDyCucumber-customerViewer</module>
         <module>CRUDyCucumber-customerEditor</module>
         <module>CRUDyCucumber-derbyCustomerLibrary</module>
+        <module>CRUDyCucumber-textCustomerLibrary</module>
     </modules>
 
     <dependencies>

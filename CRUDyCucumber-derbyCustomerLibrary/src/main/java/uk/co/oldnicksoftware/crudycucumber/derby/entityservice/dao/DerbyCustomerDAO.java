@@ -3,38 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.oldnicksoftware.crudycucumber.derby.customerservice;
+package uk.co.oldnicksoftware.crudycucumber.derby.entityservice.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
-import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
-import uk.co.oldnicksoftware.crudycucumber.domain.DiscountCode;
-import uk.co.oldnicksoftware.crudycucumber.domain.MicroMarket;
-import uk.co.oldnicksoftware.crudycucumber.domain.PurchaseOrder;
+import javax.persistence.NoResultException;
+import uk.co.oldnicksoftware.crudycucumber.domain.*;
 
 /**
  *
  * @author nick
  */
-public class DerbyCustomerDAO {
-    EntityManager entityManager ;
-    private Query query;
+public class DerbyCustomerDAO extends DerbyDAO {
     
-    private void createTransactionalEntityManager() {
-        entityManager = Persistence.createEntityManagerFactory("CustomerPU").createEntityManager();
-        query = entityManager.createNamedQuery("Customer.findAll");
-        entityManager.getTransaction().begin();
-    }
-    private void closeTransactionalEntityManager() {
-        entityManager.getTransaction().commit();
-        entityManager.close();
-    }
     
     public List<Customer> search() {
-        createTransactionalEntityManager();
+        createTransactionalEntityManager("Customer.findAll");
         
         List<Customer> customers = new ArrayList<>();
         List<Customer> resultList = query.getResultList();
@@ -45,13 +29,13 @@ public class DerbyCustomerDAO {
     }    
 
     public void save(Customer customer) {
-        createTransactionalEntityManager();
+        createTransactionalEntityManager("Customer.findAll");
         entityManager.merge(customer);
         closeTransactionalEntityManager();
     }
 
     public void create(Customer customer) {
-        createTransactionalEntityManager();
+        createTransactionalEntityManager("Customer.findAll");
         //This is Fake so we just need the first MicroMarket and Discount Code
         if (customer.getDiscountCode()==null){
             List<DiscountCode> dcList = entityManager
@@ -75,7 +59,7 @@ public class DerbyCustomerDAO {
     }
     
     public void remove(Customer customer) {
-        createTransactionalEntityManager();
+        createTransactionalEntityManager("Customer.findAll");
         //N.B. we need to remove any Orders First!!!
         entityManager
                 .createNamedQuery("PurchaseOrder.deleteByCustomerId")
@@ -87,5 +71,31 @@ public class DerbyCustomerDAO {
                 .executeUpdate();
         
         closeTransactionalEntityManager();
+    }
+
+    public void removeAll() {
+        createTransactionalEntityManager("Customer.findAll");
+        entityManager
+                .createNamedQuery("PurchaseOrder.deleteAll")
+                .executeUpdate();
+        entityManager
+                .createNamedQuery("Customer.deleteAll")
+                .executeUpdate();        
+        closeTransactionalEntityManager();
+    }
+
+    public Customer getCustomer(Customer search){
+        Customer c;
+        createTransactionalEntityManager("Customer.findAll");
+        try {
+            c= (Customer)entityManager
+                            .createNamedQuery("Customer.findByCustomerId")
+                            .setParameter("customerId",search.getCustomerId())
+                            .getSingleResult();      
+        } catch (NoResultException e) {
+            c= search;
+        }     
+        closeTransactionalEntityManager();
+        return c;
     }
 }

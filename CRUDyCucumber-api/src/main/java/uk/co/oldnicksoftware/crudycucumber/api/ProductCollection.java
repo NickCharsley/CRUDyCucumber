@@ -6,12 +6,13 @@
 package uk.co.oldnicksoftware.crudycucumber.api;
 
 import java.util.List;
-import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
+import uk.co.oldnicksoftware.crudycucumber.domain.Product;
 
 /**
+ *
  * @author nick
  */
-public interface CustomerCollection extends EntityCollection {
-    public List getCustomers();
-    public Customer getCustomer(Customer search);
+public interface ProductCollection extends EntityCollection {
+    public List getProducts();
+    public Product getProduct(Product search);
 }

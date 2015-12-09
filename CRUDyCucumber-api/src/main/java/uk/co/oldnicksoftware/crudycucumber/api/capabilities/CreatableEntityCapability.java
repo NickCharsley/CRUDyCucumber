@@ -5,12 +5,11 @@
  */
 package uk.co.oldnicksoftware.crudycucumber.api.capabilities;
 
-import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
-
 /**
  *
  * @author nick
+ * @param <Entity> The Entity Type
  */
-public interface CreatableEntityCapability {
-    public void create(Customer customer) throws Exception;    
+public interface CreatableEntityCapability<Entity>{
+    public void create(Entity entity) throws Exception;    
 }

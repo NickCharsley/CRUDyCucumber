@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.co.oldnicksoftware.crudycucumber.derby.customerservice;
+package uk.co.oldnicksoftware.crudycucumber.derby.entityservice.collection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +22,7 @@ import org.openide.util.lookup.ServiceProvider;
 import uk.co.oldnicksoftware.crudycucumber.api.CustomerCollection;
 import uk.co.oldnicksoftware.crudycucumber.api.capabilities.ReloadableViewCapability;
 import uk.co.oldnicksoftware.crudycucumber.api.capabilities.RemovableEntityCapability;
+import uk.co.oldnicksoftware.crudycucumber.derby.entityservice.dao.DerbyCustomerDAO;
 
 /**
  *
@@ -67,7 +68,7 @@ public final class DerbyCustomerCollection implements CustomerCollection {
             }
         });
         // ...and a "Creatable" ability:
-        instanceContent.add(new CreatableEntityCapability() {
+        instanceContent.add(new CreatableEntityCapability<Customer>() {
             @Override
             public void create(Customer customer) throws Exception {
                 dao.create(customer);
@@ -80,6 +81,12 @@ public final class DerbyCustomerCollection implements CustomerCollection {
                 dao.remove(customer);
                 getCustomers().remove(customer);
             }            
+
+            @Override
+            public void removeAll() throws Exception {
+                dao.removeAll();
+                getCustomers().clear();
+            }
         });
 
     }
@@ -105,5 +112,10 @@ public final class DerbyCustomerCollection implements CustomerCollection {
         } catch (Exception ex) {
             Exceptions.printStackTrace(ex);
         }
+    }
+
+    @Override
+    public Customer getCustomer(Customer search) {
+        return dao.getCustomer(search);
     }
 }
