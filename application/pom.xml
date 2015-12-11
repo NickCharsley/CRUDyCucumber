@@ -59,8 +59,8 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <!--artifactId>CRUDyCucumber-textCustomerLibrary</artifactId-->
-            <artifactId>CRUDyCucumber-derbyCustomerLibrary</artifactId>
+            <artifactId>CRUDyCucumber-textCustomerLibrary</artifactId>
+            <!--artifactId>CRUDyCucumber-derbyCustomerLibrary</artifactId-->
             <version>${project.version}</version>
         </dependency>
         <dependency>

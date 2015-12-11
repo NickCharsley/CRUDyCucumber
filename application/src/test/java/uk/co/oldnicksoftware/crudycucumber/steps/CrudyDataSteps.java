@@ -9,21 +9,21 @@ import cucumber.api.java.en.*;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import javax.swing.tree.TreePath;
-import org.netbeans.jellytools.TopComponentOperator;
-import org.netbeans.jemmy.operators.JPopupMenuOperator;
-import org.netbeans.jemmy.operators.JTreeOperator;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
+import org.openide.windows.WindowManager;
 import uk.co.oldnicksoftware.crudycucumber.api.*;
 import uk.co.oldnicksoftware.crudycucumber.api.capabilities.*;
 import uk.co.oldnicksoftware.crudycucumber.domain.*;
+import uk.co.oldnicksoftware.crudycucumber.view.list.CustomerListTopComponent;
 
 /**
  *
  * @author nick
  */
-public class CrudyPUSteps {
+public class CrudyDataSteps {
     private final CustomerCollection customerCollection;
     private final PurchaseOrderCollection purchaseOrderCollection;
     private final ProductCollection productCollection;
@@ -31,7 +31,7 @@ public class CrudyPUSteps {
     private final MicroMarketCollection microMarketCollection;
     /**/
         
-    public CrudyPUSteps(){
+    public CrudyDataSteps(){
         Lookup defaultLookup = Lookup.getDefault();
         
         customerCollection      = defaultLookup.lookup(CustomerCollection.class);
@@ -46,6 +46,10 @@ public class CrudyPUSteps {
     private void addPurchaseOrder(Integer ORDER_NUM,Integer CUSTOMER_ID,Integer PRODUCT_ID,
                                   Integer QUANTITY,Double SHIPPING_COST,String SALES_DATE,
                                   String SHIPPING_DATE,String FREIGHT_COMPANY) throws Exception{
+
+        assertThat("Have Customer Collection",customerCollection,is(notNullValue()));
+        assertThat("Have Purchase Order Collection",purchaseOrderCollection,is(notNullValue()));
+        assertThat("Have Product Collection",productCollection,is(notNullValue()));
 
         PurchaseOrder po=new PurchaseOrder();
         po.setOrderNum(ORDER_NUM);
@@ -75,6 +79,7 @@ public class CrudyPUSteps {
         po.setFreightCompany(FREIGHT_COMPANY);                        
         
         CreatableEntityCapability cec = purchaseOrderCollection.getLookup().lookup(CreatableEntityCapability.class);
+        assertThat("Purchase Order Creatable",cec,is(notNullValue()));
         cec.create(po);
     }    
     
@@ -82,7 +87,11 @@ public class CrudyPUSteps {
                              String NAME,String ADDRESSLINE1,String ADDRESSLINE2,
                              String CITY,String STATE,String PHONE,String FAX,
                              String EMAIL,int CREDIT_LIMIT) throws Exception{
-    /**/
+        
+        assertThat("Have Customer Collection",customerCollection,is(notNullValue()));
+        assertThat("Have Discount Code Collection",discountCodeCollection,is(notNullValue()));
+        assertThat("Have Micro Market Collection",microMarketCollection,is(notNullValue()));
+        
         Customer c=new Customer();
         c.setCustomerId(CUSTOMER_ID);
         c=customerCollection.getCustomer(c);
@@ -106,8 +115,9 @@ public class CrudyPUSteps {
         c.setFax(FAX);
         c.setEmail(EMAIL);
         c.setCreditLimit(CREDIT_LIMIT);
-    /**/    
+
         CreatableEntityCapability cec = customerCollection.getLookup().lookup(CreatableEntityCapability.class);
+        assertThat("Customer Creatable",cec,is(notNullValue()));
         cec.create(c);
     }
 
@@ -147,27 +157,27 @@ public class CrudyPUSteps {
     
     @Given("^I have (an empty|the test) Database$")
     public void haveADatabase(String databaseType) throws Throwable {
-        /**/
-        //Need to perform in correct order...
+        assertThat("Have Customer Collection",customerCollection,is(notNullValue()));
+        assertThat("Have Purchase Order Collection",purchaseOrderCollection,is(notNullValue()));
+        
         try {
             //Always empty first
+            //Need to perform in correct order...            
+            RemovableEntityCapability recPurchaseOrder= purchaseOrderCollection.getLookup().lookup(RemovableEntityCapability.class);
+            recPurchaseOrder.removeAll();
             RemovableEntityCapability recCustomer= customerCollection.getLookup().lookup(RemovableEntityCapability.class);
-            recCustomer.removeAll();            
+            recCustomer.removeAll();
             
             if (databaseType.equals("the test")){            
                 buildCustomers();
                 buildPurchaseOrders();
             }        
         } finally {            
-            //Get View Window and Perform refresh...
-            /**/
-            TopComponentOperator tco=  new TopComponentOperator("CustomerList Window");        
-            JTreeOperator tree = new JTreeOperator(tco);     
-            TreePath root=tree.findPath("");
-            JPopupMenuOperator popup = new JPopupMenuOperator(tree.callPopupOnPath(root));
-            popup.pushMenu("Reload");
-            /**/
+            //Get Explorer Window and Perform refresh...
+            CustomerListTopComponent cltc=(CustomerListTopComponent)WindowManager
+                                            .getDefault()
+                                            .findTopComponent("CustomerListTopComponent");            
+            customerCollection.reload(cltc.getExplorerManager().getRootContext());
         }
-        /**/
     }        
 }

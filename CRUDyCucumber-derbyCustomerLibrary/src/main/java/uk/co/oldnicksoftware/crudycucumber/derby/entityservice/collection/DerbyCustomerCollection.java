@@ -61,7 +61,7 @@ public final class DerbyCustomerCollection implements CustomerCollection {
             }
         });
         // ... and a "Savable" ability:
-        instanceContent.add(new SaveableEntityCapability() {
+        instanceContent.add(new SaveableEntityCapability<Customer>() {
             @Override
             public void save(Customer customer) throws Exception {
                 dao.save(customer);
@@ -75,7 +75,7 @@ public final class DerbyCustomerCollection implements CustomerCollection {
             }
         });
         // ... and a "Removeable" ability:
-        instanceContent.add(new RemovableEntityCapability(){
+        instanceContent.add(new RemovableEntityCapability<Customer>(){
             @Override
             public void remove(Customer customer) throws Exception {
                 dao.remove(customer);

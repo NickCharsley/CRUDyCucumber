@@ -5,13 +5,11 @@
  */
 package uk.co.oldnicksoftware.crudycucumber.api.capabilities;
 
-import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
-
 /**
  *
  * @author nick
  */
-public interface RemovableEntityCapability {
-    public void remove(Customer customer) throws Exception;
+public interface RemovableEntityCapability<Entity> {
+    public void remove(Entity entity) throws Exception;
     public void removeAll() throws Exception;
 }

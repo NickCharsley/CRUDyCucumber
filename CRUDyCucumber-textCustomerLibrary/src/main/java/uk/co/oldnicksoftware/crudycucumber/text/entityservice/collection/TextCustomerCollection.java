@@ -4,14 +4,10 @@
  * and open the template in the editor.
  */
 package uk.co.oldnicksoftware.crudycucumber.text.entityservice.collection;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.openide.awt.StatusDisplayer;
-import org.openide.nodes.Node;
-import org.openide.util.Exceptions;
-import org.openide.util.Lookup;
-import org.openide.util.lookup.AbstractLookup;
-import org.openide.util.lookup.InstanceContent;
 import org.openide.util.lookup.ServiceProvider;
 import uk.co.oldnicksoftware.crudycucumber.api.CustomerCollection;
 import uk.co.oldnicksoftware.crudycucumber.api.capabilities.*;
@@ -22,84 +18,62 @@ import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
  * @author nick
  */
 @ServiceProvider(service = CustomerCollection.class)
-public class TextCustomerCollection  implements CustomerCollection {
-    private List customers;
-    private Lookup lookup;
-    private InstanceContent instanceContent;
-    
-    
-    @Override
-    public Lookup getLookup() {
-        customers = new ArrayList();
-        // Create an InstanceContent to hold abilities...
-        instanceContent = new InstanceContent();
-        // Create an AbstractLookup to expose InstanceContent contents...
-        lookup = new AbstractLookup(instanceContent);
+public class TextCustomerCollection extends TextCollection implements CustomerCollection {
+    private Map<Integer,Customer> searchCustomers;
+
+    public TextCustomerCollection(){
+        searchCustomers=new HashMap();
+        // Add a "Reloadable" ability to this entity:
         instanceContent.add(new ReloadableEntityCapability() {
             @Override
             public void reload() throws Exception {
-                getCustomers().clear();
-                Customer cu=new Customer();
-                cu.setName("Jumbo Eagle Corp II");
-                cu.setCity("Fort Lauderdale");                                
-                getCustomers().add(cu);
-                
-                Customer cu1=new Customer();
-                cu1.setName("Yankee Computer Repair Ltd");
-                getCustomers().add(cu1);                                
             }
         });
+        // ...and a "Creatable" ability:
         instanceContent.add(new CreatableEntityCapability<Customer>() {
             @Override
             public void create(Customer customer) throws Exception {
-                Customer cu=new Customer();
-                cu.setName("Old Nick Software");
-                cu.setCity("London");                                
-                getCustomers().add(cu);
+                if (!searchCustomers.containsKey(customer.getCustomerId())){
+                    getCustomers().add(customer);
+                    searchCustomers.put(customer.getCustomerId(),customer);
+                }
             }
         });
-        instanceContent.add(new RemovableEntityCapability() {
+        // ...and a "Removeable" ability:                
+        instanceContent.add(new RemovableEntityCapability<Customer>() {
             @Override
             public void remove(Customer customer) throws Exception {
-                getCustomers().remove(customer);
+                if (searchCustomers.containsKey(customer.getCustomerId())){
+                    getCustomers().remove(customer);
+                    searchCustomers.remove(customer.getCustomerId());
+                }
             }            
 
             @Override
             public void removeAll() throws Exception {
                 getCustomers().clear();
+                searchCustomers.clear();
             }
         });
-        instanceContent.add(new SaveableEntityCapability() {
+        // ... and a "Savable" ability:
+        instanceContent.add(new SaveableEntityCapability<Customer>() {
             @Override
             public void save(Customer customer) throws Exception {
                 StatusDisplayer.getDefault().setStatusText("Saved...");
             }
-        });
-
-    
-        return lookup;
+        });        
     }
-
+    
     @Override
     public List getCustomers() {
-        return customers;
-    }
-
-    @Override
-    public void reload(Node rootNode){
-        try {
-            //Refresh the list of customers via the implementation of the reload capability:
-            ReloadableEntityCapability r = this.getLookup().lookup(ReloadableEntityCapability.class);
-            r.reload();
-            ReloadableViewCapability rvc = rootNode.getLookup().lookup(ReloadableViewCapability.class);    
-            rvc.reloadChildren();
-        } catch (Exception ex) {
-            Exceptions.printStackTrace(ex);
-        }
+        return collection;
     }
 
     @Override
     public Customer getCustomer(Customer search) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (searchCustomers.containsKey(search.getCustomerId())){
+            return searchCustomers.get(search.getCustomerId());
+        }
+        return search;
     }
 }

@@ -5,12 +5,10 @@
  */
 package uk.co.oldnicksoftware.crudycucumber.api.capabilities;
 
-import uk.co.oldnicksoftware.crudycucumber.domain.Customer;
-
 /**
  *
  * @author nick
  */
-public interface SaveableEntityCapability {
-    public void save(Customer customer) throws Exception;
+public interface SaveableEntityCapability<Entity> {
+    public void save(Entity entity) throws Exception;
 }

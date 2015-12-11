@@ -16,7 +16,6 @@ import uk.co.oldnicksoftware.crudycucumber.api.ProductCollection;
 import uk.co.oldnicksoftware.crudycucumber.api.capabilities.CreatableEntityCapability;
 import uk.co.oldnicksoftware.crudycucumber.derby.entityservice.dao.DerbyProductDAO;
 import uk.co.oldnicksoftware.crudycucumber.domain.Product;
-import uk.co.oldnicksoftware.crudycucumber.domain.PurchaseOrder;
 
 /**
  *
