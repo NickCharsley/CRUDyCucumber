@@ -16,7 +16,7 @@ Currently this has:
 
 The fifth and final step had some really wicked refactoring, un-exporting various packages, and here the cucumber testing really shone, at each step it was possible to quickly check it wasn't broken.
 
-The final addition is to create the 'text' query and ensure it returned enough data to pass the cucumber tests.
+The final addition wass to create the 'text' query and ensure it returned enough data to pass the cucumber test, and with all the Cucumber tests in place again this was reasonably simple to do! 
 
 As part of this we also refactored the creation of test data. This involved making use of the loosely coupled data layer, and expanding it with the missing entity collections.
 
